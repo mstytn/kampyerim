@@ -5,16 +5,19 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
-const Camp = require('./models/Camp')
+const Camp = require('./models/camp')
 const CampResponse = require('./models/response')
+const { getDirections } = require('./models/mapbox')
 
-mongoose.connect('mongodb://localhost:27017/campsdb').then(() => console.log('mongoose Connected')).catch(console.error)
+mongoose.connect(`mongodb://localhost:27017/${process.env.DB}`).then(() => console.log('mongoose Connected')).catch(console.error)
 
 const corsOptions = {
-  origin: 'http://127.0.0.1:5500',
+  origin: process.env.origin,
   credentials:true,
   optionSuccessStatus: 200,
 }
+
+
 
 app.use(cors(corsOptions))
 
@@ -28,7 +31,7 @@ app.get('/', (req, res) => {
 app.get('/camps/:provinance', async (req, res) => {
   const query = req.params.provinance.replace(/\{|\}|\:|\$/gi, '')
   const result = await Camp.find({provinance: query})
-  res.send(result.length.toString())
+  res.send(result)
 })
 
 app.get('/provinances', (req, res) => {

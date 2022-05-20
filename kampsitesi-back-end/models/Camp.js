@@ -1,8 +1,9 @@
 // jshint ignore: start
 const { model, Schema } = require('mongoose')
-const CampResponse = require('./response')
 
-
+/**
+ * Kamplar için mongo şeması
+ */
 const campSchema = new Schema({
   name: {
     type: String,
@@ -36,7 +37,11 @@ const campSchema = new Schema({
     }
   }
 })
-
+/**
+ * Kamp şemasına sadece bölgeleri filtrelemesi için
+ * eklediğim statik fonksion
+ * @returns {[String]} Bölge isimleri
+ */
 campSchema.statics.getProvinances = async function() {
   const allData = await this.find({}, 'provinance')
   return Array.from(new Set(allData.map(i => i.provinance)))
