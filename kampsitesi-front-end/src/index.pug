@@ -9,4 +9,10 @@ html(lang="tr")
   body 
     button FETCH
     p Result
+    form(method="post" id="cInfo" enctype="multipart/form-data") 
+      input(type="hidden", name="id" value="0988499399d883")
+      input(type="text", name="place" value="Datça")
+      input(type="text", name="region" value="Muğla")
+      input(type="text", name="provinance" value="Ege Bölgesi")
+      button(type="submit") Gönder 
     script(src="js/test.prod.js") 

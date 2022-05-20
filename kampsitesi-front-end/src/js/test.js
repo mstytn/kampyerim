@@ -27,3 +27,33 @@ b.addEventListener('click', e => {
     .then(data => {p.innerText = JSON.stringify(data)})
     .catch(error => console.log('error', error));
 })
+
+const f = document.querySelector('form')
+
+f.addEventListener('submit', e => {
+  e.preventDefault()
+  const formData = new FormData(f)
+  const reqBody = {}
+  for (var pair of formData.entries()) {
+    reqBody[pair[0]] = pair[1]
+  }
+  const myHeaders = new Headers();
+  myHeaders.append('Accept', '*/*');
+  myHeaders.append('Content-Type', 'application/json')
+  myHeaders.append('Accept-Encoding', 'gzip, deflate, br');
+
+  console.log(reqBody)
+
+  const requseOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    redirect: 'follow',
+    body: JSON.stringify(reqBody)
+  }
+
+  fetch('http://localhost:3000/camps/filter/', requseOptions)
+  .then(response => response.json())
+  .then(data => console.log(data) )
+  .catch(error => console.error(error))
+})
+

@@ -132,3 +132,5 @@ dist
 
 **/*.dev.*
 **/main.css
+**/forecastdata.json
+**/owhist.json

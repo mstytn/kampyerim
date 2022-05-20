@@ -2,44 +2,77 @@
 
 require('dotenv').config()
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const Camp = require('./models/camp')
 const CampResponse = require('./models/response')
-const { getDirections } = require('./models/mapbox')
+// const { getDirections } = require('./models/mapbox')
+// const qOptions = require('./models/querylimiter')
+// const Op = require('./models/openweather')
 
-mongoose.connect(`mongodb://localhost:27017/${process.env.DB}`).then(() => console.log('mongoose Connected')).catch(console.error)
+// const fs = require('fs')
+
+// const op = new Op()
+// op.getWeaterData([27.5380468, 36.6759442], 48900).then(
+//   data => { 
+//       console.log(data)
+//     }
+//   )
+
+// op.getDailyWeather(48900).then(data => {
+//   fs.writeFileSync('./forecastdata.json', JSON.stringify(data))
+// })
+
+// op.parseWeatherData(require('./forecastdata.json'))
+
+mongoose.connect(`mongodb://localhost:27017/${process.env.DB}`)
+  .then(() => console.log('mongoose Connected'))
+  .catch(err => console.error(err))
 
 const corsOptions = {
   origin: process.env.origin,
   credentials:true,
   optionSuccessStatus: 200,
 }
-
-
-
+app.use(morgan('dev'))
 app.use(cors(corsOptions))
 
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
 app.get('/', (req, res) => {
-  res.json({success: true, message: "underConstruction"})
+  // BUG: REPLACE - ROMVE - DO SOMETHING
+  Camp.find({}).then(data => {res.json(new CampResponse(true, data.length, data))}).catch(e => {res.status(500).json(new CampResponse(false, 0, e.message))})
 })
 
+app.post('/camps/filter', async (req, res) => {
+  const result = await CampResponse.filterCamps(req.body)
+  if (!result.success)
+    return res.status(403).json(result)
+  res.json(result)
+})
+
+app.get('/camps/camp/:id', async (req, res) => {
+  // BUG
+  try {
+    const result = await Camp.findById(req.params.id)
+    return res.json(new CampResponse(true, 1, result))
+  }
+  catch (e) {
+    return res.status(404).json(new CampResponse(false, 0, {message: e.message}))
+  }
+})
 app.get('/camps/:provinance', async (req, res) => {
-  const query = req.params.provinance.replace(/\{|\}|\:|\$/gi, '')
-  const result = await Camp.find({provinance: query})
+  const result = await CampResponse.getCampsInProvinance(req.params.provinance)
   res.send(result)
 })
 
-app.get('/provinances', (req, res) => {
-  Camp.getProvinances().then(data => 
-    res.json(new CampResponse(true, data.length, data))
-  ).catch(e => res.sendStatus(403))
+app.get('/provinances', async (_req, res) => {
+  const result = await CampResponse.getProvinanceList()
+  res.json(result)
 })
-
 
 app.listen(process.env.port, () => {
   console.log(`Example app listening on port ${process.env.port}`)
