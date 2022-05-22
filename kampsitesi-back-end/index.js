@@ -74,6 +74,11 @@ app.get('/provinances', async (_req, res) => {
   res.json(result)
 })
 
+app.post('/geoloc', (req, res) => {
+  console.log(req.body)
+  res.json(new CampResponse(false, 0, []))
+})
+
 app.use((err, req, res, next) => {
   res.status(500)
   res.json(new CampResponse(false, 0, [{message: err.message}]))

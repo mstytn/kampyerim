@@ -1,5 +1,4 @@
 {
-  "livePugCompiler.savePath": "/kampsitesi-front-end/build",
   "liveSassCompile.settings.generateMap": false,
   "liveSassCompile.settings.formats": [
     {
@@ -8,15 +7,14 @@
       "savePath": "/kampsitesi-front-end/build/css",
       "savePathSegmentKeys": null,
       "savePathReplaceSegmentsWith": null
+    },
+    {
+      "format": "compressed",
+      "extensionName": ".min.css",
+      "savePath": "/kampsitesi-front-end/build/css",
+      "savePathSegmentKeys": null,
+      "savePathReplaceSegmentsWith": null
     }
   ],
-  "compile-hero.disable-compile-files-on-did-save-code": false,
-  "compile-hero.javascript-output-directory": "../../build/js",
-  "compile-hero.scss-output-directory": "../../build/css",
-  "compile-hero.pug-output-directory": "../build/",
-  "compile-hero.ignore": ["/kampsitesi-front-end/src/scss/partials/*.*"],
-  "compile-hero.watch": ["**/src/js/**/*", "**/src/scss/*", "**/src/*"],
-  "compile-hero.generate-minified-css": true,
-  "compile-hero.generate-minified-javascript": true,
   "jshint.enable": false
 }
