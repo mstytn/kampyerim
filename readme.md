@@ -1,12 +1,12 @@
 # **Kampyerim** *Front-End* Back-End* Web Uygulaması (İsmek Kurs Bitirme Ödevi)
 
+!!!Geliştirme Aşamasında!!!
+
 İsmek Front-End Developer kursu için bitirme projesidir. Bu repo **Back-End** ve **Front-End** olmak üzere iki kısımdan oluşmaktadır.
 
 ## Site Amacı
 
 Kamp Sitesi Türkiyede bulunan kamp yapılabilecek ücretli ya da ücretsiz kamp lanalarını listelemek, bu alanlardaki günlük ve ileri tarihli havadurumu bilgisi ve bulunulan konumdan (kullanıcı lokasyon izni verdiyse) ya da seçilen konumdan uzaklığını km olarak gösteren bir ugulama olmak üzere tasarlandı. Zamanla eklenebilecek özellikler yapılabiliecekler listesinde belirtilmektedir.
-
-![Site Önizlemesi](./screenshot.png)
 
 ## İndex
 
