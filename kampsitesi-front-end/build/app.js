@@ -116,4 +116,8 @@ var UserLocation = /*#__PURE__*/function () {
 }();
 
 var uloc = new UserLocation();
-uloc.getPlace().then(console.log)["catch"](console.log); // uLoc.getPlace().then(console.log).catch(console.error)
+if (!uloc.userLocation) uloc.getPlace().then(function (res) {
+  document.querySelector('span.youre-here').innerText = res.data.region;
+})["catch"](function () {
+  document.querySelector('span.youre-here').innerText = 'Bilinmiyor';
+}); // uLoc.getPlace().then(console.log).catch(console.error)

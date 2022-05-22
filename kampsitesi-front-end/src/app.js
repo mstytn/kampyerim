@@ -34,6 +34,12 @@ class UserLocation {
 }
 
 const uloc = new UserLocation()
-uloc.getPlace().then(console.log).catch(console.log)
+if (!uloc.userLocation)
+  uloc.getPlace().then(res => {
+    document.querySelector('span.youre-here').innerText = res.data.region
+  }).catch(() =>{
+    document.querySelector('span.youre-here').innerText = 'Bilinmiyor'
+  })
+
 // uLoc.getPlace().then(console.log).catch(console.error)
 

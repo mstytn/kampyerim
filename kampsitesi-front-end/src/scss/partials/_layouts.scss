@@ -91,6 +91,16 @@ body {
       }
     }
   }
+  & p {
+    position: absolute;
+    top: -1.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #aaa;
+    color: limegreen;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
 }
 
 .inp {

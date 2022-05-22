@@ -1,5 +1,6 @@
 const Camp = require('./camp')
 const qOptions = require('./querylimiter')
+const { findPlace } = require('./mapbox')
 
 /**
  * Serverdan dönen yer bilgisini standardize etmen için aracı sınıf
@@ -51,5 +52,13 @@ module.exports = class CampResponse {
     } else {
       return new CampResponse(false, 0, 'Filtreleme kriterleriniz ile ilgili bir sorun var')
     }
+  }
+
+  static async getGeoObj(somedata) {
+    if (somedata) {
+      const result = await findPlace(somedata.reverse())
+      console.log(result)
+      return result
+    } return undefined
   }
 }
