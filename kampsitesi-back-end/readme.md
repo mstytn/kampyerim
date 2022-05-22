@@ -122,7 +122,7 @@ Kapmları Bölge / İl / İlçe olarak filtreleyip geri gönderen POST Route.
   "length": 1,
   "data": [
     {
-      "message": "Mesaj"
+      ...
     }
   ]
 }
@@ -134,7 +134,7 @@ Kapmları Bölge / İl / İlçe olarak filtreleyip geri gönderen POST Route.
 "CampResponse": {
   "sucess": false,
   "length": 0,
-  "data": []
+  "data": {}
 }
 ```
 

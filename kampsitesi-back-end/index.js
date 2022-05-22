@@ -61,7 +61,7 @@ app.get('/camps/camp/:id', async (req, res) => {
     return res.json(new CampResponse(true, 1, result))
   }
   catch (e) {
-    return res.status(404).json(new CampResponse(false, 0, {message: e.message}))
+    return res.status(404).json(new CampResponse(false, 0, [{message: e.message}]))
   }
 })
 app.get('/camps/:provinance', async (req, res) => {
@@ -73,6 +73,15 @@ app.get('/provinances', async (_req, res) => {
   const result = await CampResponse.getProvinanceList()
   res.json(result)
 })
+
+app.use((err, req, res, next) => {
+  res.status(500)
+  res.json(new CampResponse(false, 0, [{message: err.message}]))
+})
+
+app.get('*', function(req, res){
+  res.status(404).json(new CampResponse(false, 0, [{message: '404 İstek Bulunamadı'}]));
+});
 
 app.listen(process.env.port, () => {
   console.log(`Example app listening on port ${process.env.port}`)

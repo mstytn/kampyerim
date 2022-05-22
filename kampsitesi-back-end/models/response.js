@@ -1,7 +1,5 @@
-const { query } = require('express')
 const Camp = require('./camp')
 const qOptions = require('./querylimiter')
-const CampResponse = require('./response')
 
 /**
  * Serverdan dönen yer bilgisini standardize etmen için aracı sınıf
