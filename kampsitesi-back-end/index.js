@@ -59,6 +59,11 @@ app.get('/camps/random', async (req, res) => {
   res.json(result)
 })
 
+app.get('/camps/cluster', async (req, res) => {
+  const result = await CampResponse.getClusterMap()
+  res.json(result)
+})
+
 app.get('/camps/camp/:id', async (req, res) => {
   // BUG
   try {
@@ -82,6 +87,13 @@ app.get('/provinances', async (_req, res) => {
 app.post('/geoloc', async (req, res) => {
   const result = await CampResponse.getGeoObj(req.body.loc)
   res.json(new CampResponse(true, result.length, result))
+})
+
+app.get('/mapboxtoken/:token', (req, res) => {
+  if (req.params.token === process.env.MAPREQ_TOKEN)
+    res.json(new CampResponse(true, 1, process.env.MAPBOX_TOKEN))
+  else
+    res.status(403).json(new CampResponse(false, 0, {}))
 })
 
 app.use((err, req, res, next) => {

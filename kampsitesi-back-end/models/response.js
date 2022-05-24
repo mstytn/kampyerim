@@ -1,7 +1,6 @@
 const Camp = require('./camp')
 const qOptions = require('./querylimiter')
 const { findPlace } = require('./mapbox')
-const { resourceLimits } = require('worker_threads')
 
 /**
  * Serverdan dönen yer bilgisini standardize etmen için aracı sınıf
@@ -70,5 +69,25 @@ module.exports = class CampResponse {
       return new CampResponse(true, 10, result.slice(0, 10))
     else
       return new CampResponse(false, 0, [])
+  }
+
+  static async getClusterMap() {
+    const wholeCapms = await Camp.find({})
+    const cMap = wholeCapms.map(c => {
+      const {_id, name, place, region, placename, provinance, location} = c
+      return {
+        type: "Feature",
+        properties: {
+          _id,
+          name,
+        },
+        geometry: {...location}
+      }
+    })
+    const scMap = {
+      type: "FeatureCollection",
+      features: [...cMap]
+    }
+    return new CampResponse(true, cMap.length, scMap)
   }
 }

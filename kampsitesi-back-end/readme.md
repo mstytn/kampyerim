@@ -95,6 +95,18 @@ https://{host}/camps/camp/{kampId}
 
 İstek prarametresi olarak verilen kampın id'si ile kamp bilgilerini gönderen route. Geri dönen standart CampResponse sınıfının JSON replikası
 
+```http
+https://{host}/camps/random
+```
+
+Öne çıkan kamp yerleri için rastgele kamp gönderen route
+
+```http
+https://{host}/camps/cluster
+```
+
+Mapbox haritası için kamp yerlerinin geoson onjesini gönderen route
+
 ### POST ROUTES
 
 ```http
