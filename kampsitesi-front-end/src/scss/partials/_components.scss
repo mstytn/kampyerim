@@ -2,14 +2,13 @@
 @use './mixins' as *;
 
 .featured-campgrid {
-  position: relative;
   max-width: 900px;
-  top: -2rem;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 200px);
   gap: 1rem;
+  margin-top: 1rem;
 }
 
 .featured-camp {

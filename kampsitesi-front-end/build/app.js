@@ -25,12 +25,15 @@ var UserLocation = /*#__PURE__*/function () {
     _classCallCheck(this, UserLocation);
 
     this.userLocation = undefined;
+    this.point = [32.866287, 39.925533];
   }
 
   _createClass(UserLocation, [{
     key: "requestLocation",
     value: function () {
       var _requestLocation = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+        var _this = this;
+
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -38,6 +41,7 @@ var UserLocation = /*#__PURE__*/function () {
                 return _context.abrupt("return", new Promise(function (res, rej) {
                   if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
+                      _this.point = [position.coords.longitude, position.coords.latitude];
                       res({
                         type: "Point",
                         location: [position.coords.latitude, position.coords.longitude]
@@ -137,7 +141,7 @@ var FeaturedCaps = /*#__PURE__*/function () {
     key: "featuredCampCreator",
     value: function () {
       var _featuredCampCreator = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-        var _this = this;
+        var _this2 = this;
 
         var data;
         return _regeneratorRuntime().wrap(function _callee3$(_context3) {
@@ -149,13 +153,12 @@ var FeaturedCaps = /*#__PURE__*/function () {
 
               case 2:
                 data = _context3.sent;
-                console.log(data);
                 data.forEach(function (d) {
-                  _this.fCamps += "\n        <div class=\"featured-camp\">\n          <div class=\"featured-camp__img\">\n            <img src=\"".concat(d.images[0], "\" alt=\"").concat(d.name.toLowerCase(), "\">\n            </div>\n          <img class=\"dummy\" src=\"imgs/dummy.png\" alt=\"dummy\">\n          <div class=\"featured-camp__info\">\n            <h3>").concat(d.name.toLowerCase(), "</h3>\n            <p><i class=\"bi bi-geo-alt-fill\"></i> ").concat(d.region, "</p>\n          </div>\n        </div>\n      ");
+                  _this2.fCamps += "\n        <div class=\"featured-camp\">\n          <div class=\"featured-camp__img\">\n            <img src=\"".concat(d.images[0], "\" alt=\"").concat(d.name.toLowerCase(), "\">\n            </div>\n          <img class=\"dummy\" src=\"imgs/dummy.png\" alt=\"dummy\">\n          <div class=\"featured-camp__info\">\n            <h3>").concat(d.name.toLowerCase(), "</h3>\n            <p><i class=\"bi bi-geo-alt-fill\"></i> ").concat(d.region, "</p>\n          </div>\n        </div>\n      ");
                 });
                 return _context3.abrupt("return", this);
 
-              case 6:
+              case 5:
               case "end":
                 return _context3.stop();
             }
@@ -169,6 +172,14 @@ var FeaturedCaps = /*#__PURE__*/function () {
 
       return featuredCampCreator;
     }()
+  }, {
+    key: "displayFeatured",
+    value: function displayFeatured() {
+      if (this.fCamps || this.fCamps !== '') {
+        this.featuredList.innerHTML = '';
+        this.featuredList.insertAdjacentHTML('afterbegin', this.fCamps);
+      }
+    }
   }]);
 
   return FeaturedCaps;
@@ -179,11 +190,11 @@ function _featuredCampGetter2() {
 }
 
 function _featuredCampGetter3() {
-  _featuredCampGetter3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+  _featuredCampGetter3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
     var response, data;
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
             this.myHeaders = new Headers();
             this.myHeaders.append('Accept', '*/*');
@@ -194,38 +205,198 @@ function _featuredCampGetter3() {
               headers: this.myHeaders,
               redirect: 'follow'
             };
-            _context4.next = 7;
+            _context6.next = 7;
             return fetch('http://localhost:3000/camps/random', this.requestOptions);
 
           case 7:
-            response = _context4.sent;
-            _context4.next = 10;
+            response = _context6.sent;
+            _context6.next = 10;
             return response.json();
 
           case 10:
-            data = _context4.sent;
+            data = _context6.sent;
 
             if (!data.success) {
-              _context4.next = 13;
+              _context6.next = 13;
               break;
             }
 
-            return _context4.abrupt("return", data.data.slice(0, 4));
+            return _context6.abrupt("return", data.data.slice(0, 4));
 
           case 13:
           case "end":
-            return _context4.stop();
+            return _context6.stop();
         }
       }
-    }, _callee4, this);
+    }, _callee6, this);
   }));
   return _featuredCampGetter3.apply(this, arguments);
 }
 
+function showMap() {
+  return _showMap.apply(this, arguments);
+}
+
+function _showMap() {
+  _showMap = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
+    var myHeaders, requestOptions, tokenResponse, mapboxToken, map, response, cluster;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            myHeaders = new Headers();
+            myHeaders.append('Accept', '*/*');
+            myHeaders.append('Content-Type', 'application/json');
+            myHeaders.append('Accept-Encoding', 'gzip, deflate, br');
+            requestOptions = {
+              method: 'GET',
+              headers: myHeaders,
+              redirect: 'follow'
+            };
+            _context5.next = 7;
+            return fetch('http://localhost:3000/mapboxtoken/e72587d1b2ef43e9b6ec56f693612826', requestOptions);
+
+          case 7:
+            tokenResponse = _context5.sent;
+            _context5.next = 10;
+            return tokenResponse.json();
+
+          case 10:
+            mapboxToken = _context5.sent;
+            mapboxgl.accessToken = mapboxToken.data;
+            _context5.next = 14;
+            return uloc.requestLocation();
+
+          case 14:
+            map = new mapboxgl.Map({
+              container: 'map',
+              style: 'mapbox://styles/mapbox/light-v10',
+              center: uloc.point,
+              zoom: 5
+            });
+            _context5.next = 17;
+            return fetch('http://localhost:3000/camps/cluster', requestOptions);
+
+          case 17:
+            response = _context5.sent;
+            _context5.next = 20;
+            return response.json();
+
+          case 20:
+            cluster = _context5.sent;
+            map.on('load', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4() {
+              return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+                while (1) {
+                  switch (_context4.prev = _context4.next) {
+                    case 0:
+                      map.addSource('kampyerleri', {
+                        type: 'geojson',
+                        data: cluster.data,
+                        cluster: true,
+                        clusterMaxZoom: 8,
+                        clusterRadius: 50
+                      });
+                      map.addLayer({
+                        id: 'clusters',
+                        type: 'circle',
+                        source: 'kampyerleri',
+                        filter: ['has', 'point_count'],
+                        paint: {
+                          // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
+                          // with three steps to implement three types of circles:
+                          //   * Blue, 20px circles when point count is less than 100
+                          //   * Yellow, 30px circles when point count is between 100 and 750
+                          //   * Pink, 40px circles when point count is greater than or equal to 750
+                          'circle-color': ['step', ['get', 'point_count'], '#51bbd6', 25, '#f1f075', 50, '#f28cb1'],
+                          'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40]
+                        }
+                      });
+                      map.addLayer({
+                        id: 'cluster-count',
+                        type: 'symbol',
+                        source: 'kampyerleri',
+                        filter: ['has', 'point_count'],
+                        layout: {
+                          'text-field': '{point_count_abbreviated}',
+                          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                          'text-size': 12
+                        }
+                      });
+                      map.addLayer({
+                        id: 'unclustered-point',
+                        type: 'circle',
+                        source: 'kampyerleri',
+                        filter: ['!', ['has', 'point_count']],
+                        paint: {
+                          'circle-color': '#11b4da',
+                          'circle-radius': 4,
+                          'circle-stroke-width': 1,
+                          'circle-stroke-color': '#fff'
+                        }
+                      });
+
+                    case 4:
+                    case "end":
+                      return _context4.stop();
+                  }
+                }
+              }, _callee4);
+            }))); // inspect a cluster on click
+
+            map.on('click', 'clusters', function (e) {
+              var features = map.queryRenderedFeatures(e.point, {
+                layers: ['clusters']
+              });
+              var clusterId = features[0].properties.cluster_id;
+              map.getSource('kampyerleri').getClusterExpansionZoom(clusterId, function (err, zoom) {
+                if (err) return;
+                map.easeTo({
+                  center: features[0].geometry.coordinates,
+                  zoom: zoom
+                });
+              });
+            }); // When a click event occurs on a feature in
+            // the unclustered-point layer, open a popup at
+            // the location of the feature, with
+            // description HTML from its properties.
+
+            map.on('click', 'unclustered-point', function (e) {
+              var coordinates = e.features[0].geometry.coordinates.slice();
+              var mag = e.features[0].properties.mag;
+              var tsunami = e.features[0].properties.tsunami === 1 ? 'yes' : 'no'; // Ensure that if the map is zoomed out such that
+              // multiple copies of the feature are visible, the
+              // popup appears over the copy being pointed to.
+
+              while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+              }
+
+              new mapboxgl.Popup().setLngLat(coordinates).setHTML("magnitude: ".concat(mag, "<br>Was there a tsunami?: ").concat(tsunami)).addTo(map);
+            });
+            map.on('mouseenter', 'clusters', function () {
+              map.getCanvas().style.cursor = 'pointer';
+            });
+            map.on('mouseleave', 'clusters', function () {
+              map.getCanvas().style.cursor = '';
+            });
+            return _context5.abrupt("return", map);
+
+          case 27:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5);
+  }));
+  return _showMap.apply(this, arguments);
+}
+
+var uloc = new UserLocation();
+var map; // showMap().then(mp => {map = mp})
+
 var fc = new FeaturedCaps('.featured-campgrid');
 fc.featuredCampCreator().then(function (o) {
-  o.featuredList.innerHTML = '';
-  o.featuredList.insertAdjacentHTML('beforeend', o.fCamps);
+  o.displayFeatured();
 }); // const uloc = new UserLocation()
 // if (!uloc.userLocation)
 //   uloc.getPlace().then(res => {
