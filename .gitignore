@@ -134,3 +134,4 @@ dist
 **/main.css
 **/forecastdata.json
 **/owhist.json
+assets/**/*

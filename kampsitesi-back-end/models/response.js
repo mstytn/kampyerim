@@ -1,6 +1,7 @@
 const Camp = require('./camp')
 const qOptions = require('./querylimiter')
 const { findPlace } = require('./mapbox')
+const { resourceLimits } = require('worker_threads')
 
 /**
  * Serverdan dönen yer bilgisini standardize etmen için aracı sınıf
@@ -60,5 +61,14 @@ module.exports = class CampResponse {
       console.log(result)
       return result
     } return undefined
+  }
+
+  static async getRandomCamp() {
+    const mReult = await Camp.aggregate([{ $sample: {size: 20}}])
+    const result = mReult.filter(m => m.images.length > 0)
+    if (result.length >= 10)
+      return new CampResponse(true, 10, result.slice(0, 10))
+    else
+      return new CampResponse(false, 0, [])
   }
 }

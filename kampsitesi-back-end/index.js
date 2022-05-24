@@ -54,6 +54,11 @@ app.post('/camps/filter', async (req, res) => {
   res.json(result)
 })
 
+app.get('/camps/random', async (req, res) => {
+  const result = await CampResponse.getRandomCamp()
+  res.json(result)
+})
+
 app.get('/camps/camp/:id', async (req, res) => {
   // BUG
   try {

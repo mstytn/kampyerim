@@ -1,0 +1,71 @@
+@use './abstracts' as *;
+@use './mixins' as *;
+
+.featured-campgrid {
+  position: relative;
+  max-width: 900px;
+  top: -2rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 200px);
+  gap: 1rem;
+}
+
+.featured-camp {
+  position: relative;
+  .dummy {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    object-fit: cover;
+    z-index: -1;
+  }
+  &__info {
+    position: absolute;
+    color: white;
+    @include abslute-cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    & > h3 {
+      font-size: 1.4rem;
+      text-transform: capitalize;
+      text-align: center;
+    }
+    & > p {
+      position: absolute;
+      right: 0;
+      top: 5px;
+      transform: translateX(-25%);
+    }
+  }
+  &__img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    &:after {
+      content: '';
+      position: absolute;
+      @include abslute-cover;
+      background: radial-gradient(rgba(black, .5), rgba($color-base, .2));
+      background-color: rgba($color-base, .2);
+    }
+  }
+  grid-column: auto / span 1;
+  &:nth-of-type(2) {
+    grid-column: 2 / -1;
+  }
+  &:nth-of-type(3) {
+    grid-column: 1 / span 2;
+  }
+}
