@@ -58,7 +58,7 @@ class FeaturedCaps {
       const response = await fetch('http://localhost:3000/camps/random', this.requestOptions)
       data = await response.json()
       if (data.success) {
-        this.data = data.data.slice(0, count)
+        this.data = data.data
         return data.data.slice(0, count)
       }
     }
@@ -247,6 +247,7 @@ const fc = new FeaturedCaps('.featured-campgrid')
 fc.featuredCampCreator().then(o => {
   o.displayFeatured()
   randomCamp()
+  kamplist()
 })
 
 function randomCamp() {
@@ -267,12 +268,28 @@ function randomCamp() {
   ri.src = images[0]
 }
 
-// const uloc = new UserLocation()
-// if (!uloc.userLocation)
-//   uloc.getPlace().then(res => {
-//     document.querySelector('span.youre-here').innerText = res.data.region
-//   }).catch(() =>{
-//     document.querySelector('span.youre-here').innerText = 'Bilinmiyor'
-//   })
-// uLoc.getPlace().then(console.log).catch(console.error)
+async function kamplist(additive = false) {
+  if (uloc.userLocation)
+    throw new Error('Not Implemented')
+  const lister = document.querySelector('#list')
+  if (!additive)
+    lister.innerHTML = ''
+  fc.data.slice(0, 9).forEach(k => {
+    lister.insertAdjacentHTML('beforeend', campCard(k))
+  })
+}
 
+function campCard(data) {
+  const k = data
+  return `
+      <div class="card">
+        <img src="${k.images[0]}" alt="dummy">
+        <div class="card-info">
+          <h4>${k.name}</h4>
+          <p class="location"><i class="bi bi-geo-alt-fill"></i><span class="rl"></span>${k.region}</p>
+          <p class="description">${k.description.substring(0, 400)}...</p>
+          <a href="camp.html?id=${k._id}">daha fazla...</a>
+        </div>
+      </div>
+    `
+}

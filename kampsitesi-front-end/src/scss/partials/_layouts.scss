@@ -81,12 +81,15 @@ nav {
     display: flex;
     gap: 2rem;
     height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
     .page-info-left {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: space-between;
-      height: 100%;
+      width: 100%;
       & > p {
         text-align: justify;
       }

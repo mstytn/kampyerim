@@ -173,7 +173,7 @@ var FeaturedCaps = /*#__PURE__*/function () {
                   break;
                 }
 
-                this.data = data.data.slice(0, count);
+                this.data = data.data;
                 return _context3.abrupt("return", data.data.slice(0, count));
 
               case 16:
@@ -407,6 +407,7 @@ var fc = new FeaturedCaps('.featured-campgrid');
 fc.featuredCampCreator().then(function (o) {
   o.displayFeatured();
   randomCamp();
+  kamplist();
 });
 
 function randomCamp() {
@@ -429,11 +430,48 @@ function randomCamp() {
   rp.innerText = description;
   rf.href = 'camp.html?id=' + _id;
   ri.src = images[0];
-} // const uloc = new UserLocation()
-// if (!uloc.userLocation)
-//   uloc.getPlace().then(res => {
-//     document.querySelector('span.youre-here').innerText = res.data.region
-//   }).catch(() =>{
-//     document.querySelector('span.youre-here').innerText = 'Bilinmiyor'
-//   })
-// uLoc.getPlace().then(console.log).catch(console.error)
+}
+
+function kamplist() {
+  return _kamplist.apply(this, arguments);
+}
+
+function _kamplist() {
+  _kamplist = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+    var additive,
+        lister,
+        _args7 = arguments;
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            additive = _args7.length > 0 && _args7[0] !== undefined ? _args7[0] : false;
+
+            if (!uloc.userLocation) {
+              _context7.next = 3;
+              break;
+            }
+
+            throw new Error('Not Implemented');
+
+          case 3:
+            lister = document.querySelector('#list');
+            if (!additive) lister.innerHTML = '';
+            fc.data.slice(0, 9).forEach(function (k) {
+              lister.insertAdjacentHTML('beforeend', campCard(k));
+            });
+
+          case 6:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7);
+  }));
+  return _kamplist.apply(this, arguments);
+}
+
+function campCard(data) {
+  var k = data;
+  return "\n      <div class=\"card\">\n        <img src=\"".concat(k.images[0], "\" alt=\"dummy\">\n        <div class=\"card-info\">\n          <h4>").concat(k.name, "</h4>\n          <p class=\"location\"><i class=\"bi bi-geo-alt-fill\"></i><span class=\"rl\"></span>").concat(k.region, "</p>\n          <p class=\"description\">").concat(k.description.substring(0, 400), "...</p>\n          <a href=\"camp.html?id=").concat(k._id, "\">daha fazla...</a>\n        </div>\n      </div>\n    ");
+}
