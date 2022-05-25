@@ -40,8 +40,9 @@ class FeaturedCaps {
   constructor(featuredListQuery) {
     this.featuredList = document.querySelector(featuredListQuery)
     this.fCamps = ''
+    this.data = undefined
   }
-  async #featuredCampGetter() {
+  async featuredCampGetter(count = 5) {
     this.myHeaders = new Headers();
     this.myHeaders.append('Accept', '*/*');
     this.myHeaders.append('Content-Type', 'application/json')
@@ -52,27 +53,33 @@ class FeaturedCaps {
       headers: this.myHeaders,
       redirect: 'follow'
     }
-    const response = await fetch('http://localhost:3000/camps/random', this.requestOptions)
-    const data = await response.json()
-    if (data.success)
-      return data.data.slice(0, 4)
+    let data
+    while (!data) {
+      const response = await fetch('http://localhost:3000/camps/random', this.requestOptions)
+      data = await response.json()
+      if (data.success) {
+        this.data = data.data.slice(0, count)
+        return data.data.slice(0, count)
+      }
+    }
   }
 
   async featuredCampCreator() {
-    const data = await this.#featuredCampGetter()
-    data.forEach(d => {
-      this.fCamps += `
-        <div class="featured-camp">
-          <div class="featured-camp__img">
-            <img src="${d.images[0]}" alt="${d.name.toLowerCase()}">
+    const data = await this.featuredCampGetter()
+    data.forEach((d, i) => {
+      if (i < 4)
+        this.fCamps += `
+          <div class="featured-camp">
+            <div class="featured-camp__img">
+              <img src="${d.images[0]}" alt="${d.name.toLowerCase()}">
+              </div>
+            <img class="dummy" src="imgs/dummy.png" alt="dummy">
+            <div class="featured-camp__info">
+              <h3>${d.name.toLowerCase()}</h3>
+              <p><i class="bi bi-geo-alt-fill"></i> ${d.region}</p>
             </div>
-          <img class="dummy" src="imgs/dummy.png" alt="dummy">
-          <div class="featured-camp__info">
-            <h3>${d.name.toLowerCase()}</h3>
-            <p><i class="bi bi-geo-alt-fill"></i> ${d.region}</p>
           </div>
-        </div>
-      `
+        `
     })
     return this
   }
@@ -237,7 +244,28 @@ const uloc = new UserLocation()
 let map
 // showMap().then(mp => {map = mp})
 const fc = new FeaturedCaps('.featured-campgrid')
-fc.featuredCampCreator().then(o => {o.displayFeatured()})
+fc.featuredCampCreator().then(o => {
+  o.displayFeatured()
+  randomCamp()
+})
+
+function randomCamp() {
+  const {_id, images, description, name, placename, region} = fc.data[4]
+  
+  const rh = document.querySelector('.rh')
+  const ra = document.querySelector('.ra')
+  const rl = document.querySelector('.rl')
+  const rp = document.querySelector('.rp')
+  const rf = document.querySelector('.rf')
+  const ri = document.querySelector('.ri')
+
+  rh.innerText = name
+  ra.innerText = placename.replace(', Turkey', '')
+  rl.innerText = region
+  rp.innerText = description
+  rf.href = 'camp.html?id=' + _id
+  ri.src = images[0]
+}
 
 // const uloc = new UserLocation()
 // if (!uloc.userLocation)

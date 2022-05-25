@@ -68,3 +68,15 @@
     grid-column: 1 / span 2;
   }
 }
+
+.more {
+  background-color: #eee;
+  padding: .5rem 2rem;
+  display: inline-block;
+  transition: color 300ms, background-color 300ms;
+  margin-top: 1rem;
+  align-self: flex-end;
+  &:hover {
+    background-color: #ccc;
+  }
+}
