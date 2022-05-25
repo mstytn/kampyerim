@@ -47,6 +47,12 @@ app.get('/', (req, res) => {
   Camp.find({}).then(data => {res.json(new CampResponse(true, data.length, data))}).catch(e => {res.status(500).json(new CampResponse(false, 0, e.message))})
 })
 
+app.post('/camps/nearme', (req, res) => {
+  const {lon, lat, distance} = req.body
+  const location = [+lon, +lat]
+  CampResponse.nearAggregate(location, +distance).then(data => res.json(data))
+})
+
 app.post('/camps/filter', async (req, res) => {
   const result = await CampResponse.filterCamps(req.body)
   if (!result.success)

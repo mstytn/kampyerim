@@ -14,12 +14,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
+var backendOrigin = 'http://localhost:3000';
+
 var UserLocation = /*#__PURE__*/function () {
   function UserLocation() {
     _classCallCheck(this, UserLocation);
 
     this.userLocation = undefined;
     this.point = [32.866287, 39.925533];
+    this.isPointGathered = false;
   }
 
   _createClass(UserLocation, [{
@@ -36,6 +39,7 @@ var UserLocation = /*#__PURE__*/function () {
                   if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
                       _this.point = [position.coords.longitude, position.coords.latitude];
+                      _this.isPointGathered = true;
                       res({
                         type: "Point",
                         location: [position.coords.latitude, position.coords.longitude]
@@ -89,7 +93,7 @@ var UserLocation = /*#__PURE__*/function () {
                   body: JSON.stringify(reqBody)
                 };
                 _context2.next = 12;
-                return fetch('http://localhost:3000/geoloc', requseOptions);
+                return fetch(backendOrigin + '/geoloc', requseOptions);
 
               case 12:
                 response = _context2.sent;
@@ -158,7 +162,7 @@ var FeaturedCaps = /*#__PURE__*/function () {
                 }
 
                 _context3.next = 9;
-                return fetch('http://localhost:3000/camps/random', this.requestOptions);
+                return fetch(backendOrigin + '/camps/random', this.requestOptions);
 
               case 9:
                 response = _context3.sent;
@@ -247,11 +251,11 @@ function showMap() {
 }
 
 function _showMap() {
-  _showMap = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+  _showMap = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
     var myHeaders, requestOptions, tokenResponse, mapboxToken, map, response, cluster;
-    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
       while (1) {
-        switch (_context6.prev = _context6.next) {
+        switch (_context7.prev = _context7.next) {
           case 0:
             myHeaders = new Headers();
             myHeaders.append('Accept', '*/*');
@@ -262,18 +266,18 @@ function _showMap() {
               headers: myHeaders,
               redirect: 'follow'
             };
-            _context6.next = 7;
-            return fetch('http://localhost:3000/mapboxtoken/e72587d1b2ef43e9b6ec56f693612826', requestOptions);
+            _context7.next = 7;
+            return fetch(backendOrigin + '/mapboxtoken/e72587d1b2ef43e9b6ec56f693612826', requestOptions);
 
           case 7:
-            tokenResponse = _context6.sent;
-            _context6.next = 10;
+            tokenResponse = _context7.sent;
+            _context7.next = 10;
             return tokenResponse.json();
 
           case 10:
-            mapboxToken = _context6.sent;
+            mapboxToken = _context7.sent;
             mapboxgl.accessToken = mapboxToken.data;
-            _context6.next = 14;
+            _context7.next = 14;
             return uloc.requestLocation();
 
           case 14:
@@ -283,20 +287,20 @@ function _showMap() {
               center: uloc.point,
               zoom: 5
             });
-            _context6.next = 17;
-            return fetch('http://localhost:3000/camps/cluster', requestOptions);
+            _context7.next = 17;
+            return fetch(backendOrigin + '/camps/cluster', requestOptions);
 
           case 17:
-            response = _context6.sent;
-            _context6.next = 20;
+            response = _context7.sent;
+            _context7.next = 20;
             return response.json();
 
           case 20:
-            cluster = _context6.sent;
-            map.on('load', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-              return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+            cluster = _context7.sent;
+            map.on('load', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6() {
+              return _regeneratorRuntime().wrap(function _callee6$(_context6) {
                 while (1) {
-                  switch (_context5.prev = _context5.next) {
+                  switch (_context6.prev = _context6.next) {
                     case 0:
                       map.addSource('kampyerleri', {
                         type: 'geojson',
@@ -346,10 +350,10 @@ function _showMap() {
 
                     case 4:
                     case "end":
-                      return _context5.stop();
+                      return _context6.stop();
                   }
                 }
-              }, _callee5);
+              }, _callee6);
             }))); // inspect a cluster on click
 
             map.on('click', 'clusters', function (e) {
@@ -388,14 +392,14 @@ function _showMap() {
             map.on('mouseleave', 'clusters', function () {
               map.getCanvas().style.cursor = '';
             });
-            return _context6.abrupt("return", map);
+            return _context7.abrupt("return", map);
 
           case 27:
           case "end":
-            return _context6.stop();
+            return _context7.stop();
         }
       }
-    }, _callee6);
+    }, _callee7);
   }));
   return _showMap.apply(this, arguments);
 }
@@ -404,11 +408,42 @@ var uloc = new UserLocation();
 var map; // showMap().then(mp => {map = mp})
 
 var fc = new FeaturedCaps('.featured-campgrid');
-fc.featuredCampCreator().then(function (o) {
-  o.displayFeatured();
-  randomCamp();
-  kamplist();
-});
+fc.featuredCampCreator().then( /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(o) {
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.prev = 0;
+            _context5.next = 3;
+            return uloc.requestLocation();
+
+          case 3:
+            _context5.next = 8;
+            break;
+
+          case 5:
+            _context5.prev = 5;
+            _context5.t0 = _context5["catch"](0);
+            console.log('cannot get user location');
+
+          case 8:
+            o.displayFeatured();
+            randomCamp();
+            kamplist();
+
+          case 11:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[0, 5]]);
+  }));
+
+  return function (_x) {
+    return _ref.apply(this, arguments);
+  };
+}());
 
 function randomCamp() {
   var _fc$data$ = fc.data[4],
@@ -437,41 +472,116 @@ function kamplist() {
 }
 
 function _kamplist() {
-  _kamplist = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+  _kamplist = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
     var additive,
+        filterResonseElement,
         lister,
-        _args7 = arguments;
-    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+        nearme,
+        nFilt,
+        _args8 = arguments;
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
       while (1) {
-        switch (_context7.prev = _context7.next) {
+        switch (_context8.prev = _context8.next) {
           case 0:
-            additive = _args7.length > 0 && _args7[0] !== undefined ? _args7[0] : false;
+            additive = _args8.length > 0 && _args8[0] !== undefined ? _args8[0] : false;
+            filterResonseElement = document.querySelector('.kamplistesi > p');
+            lister = document.querySelector('#list');
+            if (!additive) lister.innerHTML = '';
 
-            if (!uloc.userLocation) {
-              _context7.next = 3;
+            if (!uloc.isPointGathered) {
+              _context8.next = 14;
               break;
             }
 
-            throw new Error('Not Implemented');
+            _context8.next = 7;
+            return requestNearMe();
 
-          case 3:
-            lister = document.querySelector('#list');
-            if (!additive) lister.innerHTML = '';
+          case 7:
+            nearme = _context8.sent;
+            nFilt = nearme.data.filter(function (v, i) {
+              return i < 9;
+            });
+            nFilt.forEach(function (v, i) {
+              lister.insertAdjacentHTML('beforeend', campCard(v));
+            });
+            filterResonseElement.classList.remove('error');
+            filterResonseElement.innerText = "Size en yak\u0131n ".concat(nFilt.length, " kamp alan\u0131 g\xF6r\xFCnt\xFCleniyor");
+            _context8.next = 15;
+            break;
+
+          case 14:
             fc.data.slice(0, 9).forEach(function (k) {
+              filterResonseElement.classList.add('error');
+              filterResonseElement.innerText = "Lokasyon bilginize ula\u015Famad\u0131\u011F\u0131m\u0131zdan rastgele 9 kamp b\xF6lgesi g\xF6r\xFCn\xFCtleniyor";
               lister.insertAdjacentHTML('beforeend', campCard(k));
             });
 
-          case 6:
+          case 15:
           case "end":
-            return _context7.stop();
+            return _context8.stop();
         }
       }
-    }, _callee7);
+    }, _callee8);
   }));
   return _kamplist.apply(this, arguments);
 }
 
+function requestNearMe() {
+  return _requestNearMe.apply(this, arguments);
+}
+
+function _requestNearMe() {
+  _requestNearMe = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
+    var myHeaders, reqBody, requestOptions, response, data;
+    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            myHeaders = new Headers();
+            myHeaders.append('Accept', '*/*');
+            myHeaders.append('Content-Type', 'application/json');
+            myHeaders.append('Accept-Encoding', 'gzip, deflate, br');
+            reqBody = {
+              distance: 50000,
+              lon: uloc.point[0],
+              lat: uloc.point[1]
+            };
+            requestOptions = {
+              method: 'POST',
+              headers: myHeaders,
+              redirect: 'follow',
+              body: JSON.stringify(reqBody)
+            };
+            _context9.next = 8;
+            return fetch(backendOrigin + '/camps/nearme', requestOptions);
+
+          case 8:
+            response = _context9.sent;
+            _context9.next = 11;
+            return response.json();
+
+          case 11:
+            data = _context9.sent;
+            return _context9.abrupt("return", data);
+
+          case 13:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9);
+  }));
+  return _requestNearMe.apply(this, arguments);
+}
+
 function campCard(data) {
   var k = data;
-  return "\n      <div class=\"card\">\n        <img src=\"".concat(k.images[0], "\" alt=\"dummy\">\n        <div class=\"card-info\">\n          <h4>").concat(k.name, "</h4>\n          <p class=\"location\"><i class=\"bi bi-geo-alt-fill\"></i><span class=\"rl\"></span>").concat(k.region, "</p>\n          <p class=\"description\">").concat(k.description.substring(0, 400), "...</p>\n          <a href=\"camp.html?id=").concat(k._id, "\">daha fazla...</a>\n        </div>\n      </div>\n    ");
+  var d = '';
+
+  if (k.distance) {
+    d = "\n      <p class=\"distance\">\n        <i class=\"bi bi-signpost\"></i>\n        <span> ".concat(Math.floor(k.distance / 1000), "km</span>\n      </p>\n    ");
+  }
+
+  var theImage = k.images.length === 0 ? "imgs/dummy.png" : k.images[0];
+  return "\n      <div class=\"card\">\n        <img src=\"".concat(theImage, "\" alt=\"dummy\">\n        <div class=\"card-info\">\n          <h4>").concat(k.name, "</h4>\n          <p class=\"location\"><i class=\"bi bi-geo-alt-fill\"></i><span class=\"rl\"></span>").concat(k.region, "</p>\n          <p class=\"description\">").concat(k.description.substring(0, 400), "...</p>\n          <a href=\"camp.html?id=").concat(k._id, "\">daha fazla...</a>\n          ").concat(d, "\n        </div>\n      </div>\n    ");
 }

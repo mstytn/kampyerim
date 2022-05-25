@@ -1,7 +1,10 @@
+const backendOrigin = 'http://localhost:3000'
+
 class UserLocation {
   constructor() {
     this.userLocation = undefined
     this.point = [32.866287, 39.925533]
+    this.isPointGathered = false
   }
 
   async requestLocation() {
@@ -9,6 +12,7 @@ class UserLocation {
       if (navigator.geolocation){
         navigator.geolocation.getCurrentPosition(position => {
           this.point = [position.coords.longitude, position.coords.latitude]
+          this.isPointGathered = true
           res({ type: "Point", location: [position.coords.latitude, position.coords.longitude]})
         }, err => rej(err))
       }
@@ -29,7 +33,7 @@ class UserLocation {
       redirect: 'follow',
       body: JSON.stringify(reqBody)
     }
-    const response = await fetch('http://localhost:3000/geoloc', requseOptions)
+    const response = await fetch(backendOrigin + '/geoloc', requseOptions)
     const data = await response.json()
     return data
   }
@@ -55,7 +59,7 @@ class FeaturedCaps {
     }
     let data
     while (!data) {
-      const response = await fetch('http://localhost:3000/camps/random', this.requestOptions)
+      const response = await fetch(backendOrigin + '/camps/random', this.requestOptions)
       data = await response.json()
       if (data.success) {
         this.data = data.data
@@ -103,7 +107,7 @@ async function showMap() {
     headers: myHeaders,
     redirect: 'follow',
   }
-  const tokenResponse = await fetch('http://localhost:3000/mapboxtoken/e72587d1b2ef43e9b6ec56f693612826', requestOptions)
+  const tokenResponse = await fetch(backendOrigin + '/mapboxtoken/e72587d1b2ef43e9b6ec56f693612826', requestOptions)
   const mapboxToken = await tokenResponse.json()
 
   mapboxgl.accessToken = mapboxToken.data
@@ -116,7 +120,7 @@ async function showMap() {
     zoom: 5
   });
 
-  const response = await fetch('http://localhost:3000/camps/cluster', requestOptions)
+  const response = await fetch(backendOrigin + '/camps/cluster', requestOptions)
   const cluster = await response.json()
 
   map.on('load', async function() {
@@ -244,7 +248,12 @@ const uloc = new UserLocation()
 let map
 // showMap().then(mp => {map = mp})
 const fc = new FeaturedCaps('.featured-campgrid')
-fc.featuredCampCreator().then(o => {
+fc.featuredCampCreator().then(async (o) => {
+  try {
+    await uloc.requestLocation()
+  } catch {
+    console.log('cannot get user location')
+  }
   o.displayFeatured()
   randomCamp()
   kamplist()
@@ -269,26 +278,69 @@ function randomCamp() {
 }
 
 async function kamplist(additive = false) {
-  if (uloc.userLocation)
-    throw new Error('Not Implemented')
+  const filterResonseElement = document.querySelector('.kamplistesi > p')
   const lister = document.querySelector('#list')
   if (!additive)
     lister.innerHTML = ''
-  fc.data.slice(0, 9).forEach(k => {
-    lister.insertAdjacentHTML('beforeend', campCard(k))
-  })
+  if (uloc.isPointGathered)
+  {
+    const nearme = await requestNearMe()
+    const nFilt = nearme.data.filter((v,i) => i < 9)
+    nFilt.forEach((v, i) => {
+      
+        lister.insertAdjacentHTML('beforeend', campCard(v))
+      
+    })
+    filterResonseElement.classList.remove('error')
+    filterResonseElement.innerText = `Size en yakın ${nFilt.length} kamp alanı görüntüleniyor`
+  } else {
+    fc.data.slice(0, 9).forEach(k => {
+      filterResonseElement.classList.add('error')
+      filterResonseElement.innerText = `Lokasyon bilginize ulaşamadığımızdan rastgele 9 kamp bölgesi görünütleniyor`
+      lister.insertAdjacentHTML('beforeend', campCard(k))
+    })
+  }
+}
+
+async function requestNearMe() {
+  const myHeaders = new Headers();
+    myHeaders.append('Accept', '*/*');
+    myHeaders.append('Content-Type', 'application/json')
+    myHeaders.append('Accept-Encoding', 'gzip, deflate, br');
+    const reqBody = { distance: 50000, lon: uloc.point[0], lat: uloc.point[1]}
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      redirect: 'follow',
+      body: JSON.stringify(reqBody)
+    }
+    const response = await fetch(backendOrigin + '/camps/nearme', requestOptions)
+    const data = await response.json()
+    return data
 }
 
 function campCard(data) {
   const k = data
+  let d = ''
+  if (k.distance) {
+    d = `
+      <p class="distance">
+        <i class="bi bi-signpost"></i>
+        <span> ${Math.floor(k.distance / 1000)}km</span>
+      </p>
+    `
+  }
+  const theImage = (k.images.length === 0) ? "imgs/dummy.png" : k.images[0]
+
   return `
       <div class="card">
-        <img src="${k.images[0]}" alt="dummy">
+        <img src="${theImage}" alt="dummy">
         <div class="card-info">
           <h4>${k.name}</h4>
           <p class="location"><i class="bi bi-geo-alt-fill"></i><span class="rl"></span>${k.region}</p>
           <p class="description">${k.description.substring(0, 400)}...</p>
           <a href="camp.html?id=${k._id}">daha fazla...</a>
+          ${d}
         </div>
       </div>
     `

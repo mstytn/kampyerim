@@ -90,4 +90,20 @@ module.exports = class CampResponse {
     }
     return new CampResponse(true, cMap.length, scMap)
   }
+
+  static async nearAggregate(location, distance) {
+    const nearme = await Camp.aggregate([
+      { "$geoNear": {
+        "near": {
+          "type": "Point",
+          "coordinates": location
+        },
+        "distanceField": "distance",
+        "maxDistance": distance,
+        "spherical": true,
+      }}
+    ])
+    return new CampResponse(true, nearme.length, nearme)
+  }
+  
 }
