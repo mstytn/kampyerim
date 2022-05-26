@@ -1,4 +1,13 @@
 const backendOrigin = 'http://localhost:3000'
+const myHeaders = new Headers();
+  myHeaders.append('Accept', '*/*');
+  myHeaders.append('Content-Type', 'application/json')
+  myHeaders.append('Accept-Encoding', 'gzip, deflate, br');
+  const requestOptions = {
+    method: 'GET',
+    headers: myHeaders,
+    redirect: 'follow',
+  }
 
 class UserLocation {
   constructor() {
@@ -257,6 +266,7 @@ fc.featuredCampCreator().then(async (o) => {
   o.displayFeatured()
   randomCamp()
   kamplist()
+  addBolgeFilteringSelector()
 })
 
 function randomCamp() {
@@ -277,29 +287,31 @@ function randomCamp() {
   ri.src = images[0]
 }
 
-async function kamplist(additive = false) {
-  const filterResonseElement = document.querySelector('.kamplistesi > p')
-  const lister = document.querySelector('#list')
-  if (!additive)
-    lister.innerHTML = ''
+async function kamplist() {
   if (uloc.isPointGathered)
   {
     const nearme = await requestNearMe()
     const nFilt = nearme.data.filter((v,i) => i < 9)
-    nFilt.forEach((v, i) => {
-      
-        lister.insertAdjacentHTML('beforeend', campCard(v))
-      
-    })
-    filterResonseElement.classList.remove('error')
-    filterResonseElement.innerText = `Size en yakın ${nFilt.length} kamp alanı görüntüleniyor`
+    createKampList(nFilt, `Size en yakın ${nFilt.length} kamp alanı görüntüleniyor`)
   } else {
-    fc.data.slice(0, 9).forEach(k => {
-      filterResonseElement.classList.add('error')
-      filterResonseElement.innerText = `Lokasyon bilginize ulaşamadığımızdan rastgele 9 kamp bölgesi görünütleniyor`
-      lister.insertAdjacentHTML('beforeend', campCard(k))
-    })
+    const data = fc.data.slice(0, 9)
+    createKampList(data, `Lokasyon bilginize ulaşamadığımızdan rastgele 9 kamp bölgesi görünütleniyor`, 'error')
   }
+}
+
+function createKampList(camps, message, messageType = 'info', additive = false) {
+  const filterResonseElement = document.querySelector('.kamplistesi > p')
+  const lister = document.querySelector('#list')
+  if (!additive)
+    lister.innerHTML = ''
+  camps.forEach(v => {
+      lister.insertAdjacentHTML('beforeend', campCard(v))
+  })
+  if (messageType = 'info')
+    filterResonseElement.classList.remove('error')
+  if (messageType == 'error')
+    filterResonseElement.classList.add('error')
+  filterResonseElement.innerText = message
 }
 
 async function requestNearMe() {
@@ -344,4 +356,151 @@ function campCard(data) {
         </div>
       </div>
     `
+}
+
+
+async function addBolgeFilteringSelector() {
+  const response = await fetch(backendOrigin + '/provinances', requestOptions)
+  const data = await response.json()
+  const bolgeElement = document.querySelector('#bolge')
+  const regionElement = document.querySelector('#il')
+  const placeElement = document.querySelector('#ilce')
+  bolgeElement.innerHTML = `<option value="">Seçiniz</option>`
+  data.data.forEach(d => {
+    bolgeElement.insertAdjacentHTML('beforeend', `<option value="${d}">${d}</option>`)
+  })
+  resetFilters()
+  bolgeElement.addEventListener('change', e => {selectorUpdater(e.target)})
+  regionElement.addEventListener('change', e => {selectorUpdater(e.target)})
+  placeElement.addEventListener('change', e => {selectorUpdater(e.target)})
+}
+
+document.querySelector('.clean-filters > button').addEventListener('click', e => {
+  resetFilters()  
+})
+
+function resetFilters() {
+  const bolgeElement = document.querySelector('#bolge')
+  const ilElement = document.querySelector('#il')
+  const ilceElement = document.querySelector('#ilce')
+  const filterButton = document.querySelector('.clean-filters')
+  const filterButtonItself = document.querySelector('.clean-filters > button')
+  filterButtonItself.disabled = true
+  filterButton.classList.remove('filtered')
+  ilElement.disabled = true
+  ilceElement.disabled = true
+  bolgeElement.value = ''
+  ilElement.innerHTML = `<option value="" default>Seçiniz</option>`
+  ilceElement.innerHTML = `<option value="" default>Seçiniz</option>`
+  kamplist()
+}
+
+async function selectorUpdater(targetElement) {
+  const provinanceElement = document.querySelector('#bolge')
+  const regionElement = document.querySelector('#il')
+  const placeElement = document.querySelector('#ilce')
+  selectorDisabler()
+  const data = await filter(provinanceElement.value, regionElement.value, placeElement.value, targetElement)
+  selectorEnabler()
+  if (data) {
+    const message = `${provinanceElement.value} ${regionElement.value} ${placeElement.value} için ${data.length} kamp alanı liteleniyor`
+    createKampList(data, message)
+  }
+    
+}
+
+function selectorDisabler() {
+  const provinanceElement = document.querySelector('#bolge')
+  const regionElement = document.querySelector('#il')
+  const placeElement = document.querySelector('#ilce')
+  provinanceElement.disabled = true
+  regionElement.disabled = true
+  placeElement.disabled = true
+}
+
+function selectorEnabler() {
+  const provinanceElement = document.querySelector('#bolge')
+  const regionElement = document.querySelector('#il')
+  const placeElement = document.querySelector('#ilce')
+  if (provinanceElement.options.length > 1)
+    provinanceElement.disabled = false
+  if (regionElement.options.length > 1)
+    regionElement.disabled = false
+  if (placeElement.options.length > 1)
+    placeElement.disabled = false
+}
+
+async function filter(provinance, region, place, targetElement) {
+    const provinanceElement = document.querySelector('#bolge')
+    const regionElement = document.querySelector('#il')
+    const placeElement = document.querySelector('#ilce')
+    const filterButton = document.querySelector('.clean-filters')
+    const filterButtonItself = document.querySelector('.clean-filters > button')
+    
+    const selectMessage = `<option value="" default>Seçiniz</option>`
+    if (targetElement.id === 'bolge') {
+      region = ''
+      place = ''
+      regionElement.innerHTML = selectMessage
+      placeElement.innerHTML = selectMessage
+      selectorDisabler()
+    }
+    if (targetElement.id === 'il') {
+      place = ''
+      placeElement.innerHTML = selectMessage
+      selectorDisabler()
+    }
+    if (provinance === '' && region === '' && place === '')
+    {
+      resetFilters()
+      kamplist()
+      return
+    }
+      
+  const myHeaders = new Headers();
+    myHeaders.append('Accept', '*/*');
+    myHeaders.append('Content-Type', 'application/json')
+    myHeaders.append('Accept-Encoding', 'gzip, deflate, br');
+    const reqBody = {
+      region: region,
+      provinance: provinance,
+      place: place,
+    }
+    const requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      redirect: 'follow',
+      body: JSON.stringify(reqBody)
+    }
+
+
+    const response = await fetch(backendOrigin + '/camps/filter', requestOptions)
+    const data = await response.json()
+    if (!data.success) {
+      resetFilters()
+      kamplist()
+      return
+    } else {
+      if (provinanceElement.selectedIndex > 0) {
+        filterButton.classList.add('filtered')
+        filterButtonItself.disabled = false
+      }
+      if (provinance !== '' && region === '') {
+        const regions = data.data.map(d => d.region)
+        const regionsSelectorData = Array.from(new Set(regions)).sort().filter(v => v != undefined)
+        regionElement.innerHTML = selectMessage
+        regionsSelectorData.forEach(d => {
+          regionElement.insertAdjacentHTML('beforeend', `<option value="${d}">${d}</option>`)
+        })
+      }
+      if (region !== '' && place === '') {
+        const places = data.data.map(d => d.place)
+        const placesSelectoData = Array.from(new Set(places)).sort().filter(v => v != undefined)
+        placeElement.innerHTML = selectMessage
+        placesSelectoData.forEach(d => {
+          placeElement.insertAdjacentHTML('beforeend', `<option value="${d}">${d}</option>`)
+        })
+      }
+    }
+    return data.data
 }

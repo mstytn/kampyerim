@@ -15,6 +15,15 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
 var backendOrigin = 'http://localhost:3000';
+var myHeaders = new Headers();
+myHeaders.append('Accept', '*/*');
+myHeaders.append('Content-Type', 'application/json');
+myHeaders.append('Accept-Encoding', 'gzip, deflate, br');
+var requestOptions = {
+  method: 'GET',
+  headers: myHeaders,
+  redirect: 'follow'
+};
 
 var UserLocation = /*#__PURE__*/function () {
   function UserLocation() {
@@ -431,8 +440,9 @@ fc.featuredCampCreator().then( /*#__PURE__*/function () {
             o.displayFeatured();
             randomCamp();
             kamplist();
+            addBolgeFilteringSelector();
 
-          case 11:
+          case 12:
           case "end":
             return _context5.stop();
         }
@@ -473,50 +483,33 @@ function kamplist() {
 
 function _kamplist() {
   _kamplist = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
-    var additive,
-        filterResonseElement,
-        lister,
-        nearme,
-        nFilt,
-        _args8 = arguments;
+    var nearme, nFilt, data;
     return _regeneratorRuntime().wrap(function _callee8$(_context8) {
       while (1) {
         switch (_context8.prev = _context8.next) {
           case 0:
-            additive = _args8.length > 0 && _args8[0] !== undefined ? _args8[0] : false;
-            filterResonseElement = document.querySelector('.kamplistesi > p');
-            lister = document.querySelector('#list');
-            if (!additive) lister.innerHTML = '';
-
             if (!uloc.isPointGathered) {
-              _context8.next = 14;
+              _context8.next = 8;
               break;
             }
 
-            _context8.next = 7;
+            _context8.next = 3;
             return requestNearMe();
 
-          case 7:
+          case 3:
             nearme = _context8.sent;
             nFilt = nearme.data.filter(function (v, i) {
               return i < 9;
             });
-            nFilt.forEach(function (v, i) {
-              lister.insertAdjacentHTML('beforeend', campCard(v));
-            });
-            filterResonseElement.classList.remove('error');
-            filterResonseElement.innerText = "Size en yak\u0131n ".concat(nFilt.length, " kamp alan\u0131 g\xF6r\xFCnt\xFCleniyor");
-            _context8.next = 15;
+            createKampList(nFilt, "Size en yak\u0131n ".concat(nFilt.length, " kamp alan\u0131 g\xF6r\xFCnt\xFCleniyor"));
+            _context8.next = 10;
             break;
 
-          case 14:
-            fc.data.slice(0, 9).forEach(function (k) {
-              filterResonseElement.classList.add('error');
-              filterResonseElement.innerText = "Lokasyon bilginize ula\u015Famad\u0131\u011F\u0131m\u0131zdan rastgele 9 kamp b\xF6lgesi g\xF6r\xFCn\xFCtleniyor";
-              lister.insertAdjacentHTML('beforeend', campCard(k));
-            });
+          case 8:
+            data = fc.data.slice(0, 9);
+            createKampList(data, "Lokasyon bilginize ula\u015Famad\u0131\u011F\u0131m\u0131zdan rastgele 9 kamp b\xF6lgesi g\xF6r\xFCn\xFCtleniyor", 'error');
 
-          case 15:
+          case 10:
           case "end":
             return _context8.stop();
         }
@@ -524,6 +517,20 @@ function _kamplist() {
     }, _callee8);
   }));
   return _kamplist.apply(this, arguments);
+}
+
+function createKampList(camps, message) {
+  var messageType = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'info';
+  var additive = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+  var filterResonseElement = document.querySelector('.kamplistesi > p');
+  var lister = document.querySelector('#list');
+  if (!additive) lister.innerHTML = '';
+  camps.forEach(function (v) {
+    lister.insertAdjacentHTML('beforeend', campCard(v));
+  });
+  if (messageType = 'info') filterResonseElement.classList.remove('error');
+  if (messageType == 'error') filterResonseElement.classList.add('error');
+  filterResonseElement.innerText = message;
 }
 
 function requestNearMe() {
@@ -584,4 +591,250 @@ function campCard(data) {
 
   var theImage = k.images.length === 0 ? "imgs/dummy.png" : k.images[0];
   return "\n      <div class=\"card\">\n        <img src=\"".concat(theImage, "\" alt=\"dummy\">\n        <div class=\"card-info\">\n          <h4>").concat(k.name, "</h4>\n          <p class=\"location\"><i class=\"bi bi-geo-alt-fill\"></i><span class=\"rl\"></span>").concat(k.region, "</p>\n          <p class=\"description\">").concat(k.description.substring(0, 400), "...</p>\n          <a href=\"camp.html?id=").concat(k._id, "\">daha fazla...</a>\n          ").concat(d, "\n        </div>\n      </div>\n    ");
+}
+
+function addBolgeFilteringSelector() {
+  return _addBolgeFilteringSelector.apply(this, arguments);
+}
+
+function _addBolgeFilteringSelector() {
+  _addBolgeFilteringSelector = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
+    var response, data, bolgeElement, regionElement, placeElement;
+    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+      while (1) {
+        switch (_context10.prev = _context10.next) {
+          case 0:
+            _context10.next = 2;
+            return fetch(backendOrigin + '/provinances', requestOptions);
+
+          case 2:
+            response = _context10.sent;
+            _context10.next = 5;
+            return response.json();
+
+          case 5:
+            data = _context10.sent;
+            bolgeElement = document.querySelector('#bolge');
+            regionElement = document.querySelector('#il');
+            placeElement = document.querySelector('#ilce');
+            bolgeElement.innerHTML = "<option value=\"\">Se\xE7iniz</option>";
+            data.data.forEach(function (d) {
+              bolgeElement.insertAdjacentHTML('beforeend', "<option value=\"".concat(d, "\">").concat(d, "</option>"));
+            });
+            resetFilters();
+            bolgeElement.addEventListener('change', function (e) {
+              selectorUpdater(e.target);
+            });
+            regionElement.addEventListener('change', function (e) {
+              selectorUpdater(e.target);
+            });
+            placeElement.addEventListener('change', function (e) {
+              selectorUpdater(e.target);
+            });
+
+          case 15:
+          case "end":
+            return _context10.stop();
+        }
+      }
+    }, _callee10);
+  }));
+  return _addBolgeFilteringSelector.apply(this, arguments);
+}
+
+document.querySelector('.clean-filters > button').addEventListener('click', function (e) {
+  resetFilters();
+});
+
+function resetFilters() {
+  var bolgeElement = document.querySelector('#bolge');
+  var ilElement = document.querySelector('#il');
+  var ilceElement = document.querySelector('#ilce');
+  var filterButton = document.querySelector('.clean-filters');
+  var filterButtonItself = document.querySelector('.clean-filters > button');
+  filterButtonItself.disabled = true;
+  filterButton.classList.remove('filtered');
+  ilElement.disabled = true;
+  ilceElement.disabled = true;
+  bolgeElement.value = '';
+  ilElement.innerHTML = "<option value=\"\" default>Se\xE7iniz</option>";
+  ilceElement.innerHTML = "<option value=\"\" default>Se\xE7iniz</option>";
+  kamplist();
+}
+
+function selectorUpdater(_x2) {
+  return _selectorUpdater.apply(this, arguments);
+}
+
+function _selectorUpdater() {
+  _selectorUpdater = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(targetElement) {
+    var provinanceElement, regionElement, placeElement, data, message;
+    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+      while (1) {
+        switch (_context11.prev = _context11.next) {
+          case 0:
+            provinanceElement = document.querySelector('#bolge');
+            regionElement = document.querySelector('#il');
+            placeElement = document.querySelector('#ilce');
+            selectorDisabler();
+            _context11.next = 6;
+            return filter(provinanceElement.value, regionElement.value, placeElement.value, targetElement);
+
+          case 6:
+            data = _context11.sent;
+            selectorEnabler();
+
+            if (data) {
+              message = "".concat(provinanceElement.value, " ").concat(regionElement.value, " ").concat(placeElement.value, " i\xE7in ").concat(data.length, " kamp alan\u0131 liteleniyor");
+              createKampList(data, message);
+            }
+
+          case 9:
+          case "end":
+            return _context11.stop();
+        }
+      }
+    }, _callee11);
+  }));
+  return _selectorUpdater.apply(this, arguments);
+}
+
+function selectorDisabler() {
+  var provinanceElement = document.querySelector('#bolge');
+  var regionElement = document.querySelector('#il');
+  var placeElement = document.querySelector('#ilce');
+  provinanceElement.disabled = true;
+  regionElement.disabled = true;
+  placeElement.disabled = true;
+}
+
+function selectorEnabler() {
+  var provinanceElement = document.querySelector('#bolge');
+  var regionElement = document.querySelector('#il');
+  var placeElement = document.querySelector('#ilce');
+  if (provinanceElement.options.length > 1) provinanceElement.disabled = false;
+  if (regionElement.options.length > 1) regionElement.disabled = false;
+  if (placeElement.options.length > 1) placeElement.disabled = false;
+}
+
+function filter(_x3, _x4, _x5, _x6) {
+  return _filter.apply(this, arguments);
+}
+
+function _filter() {
+  _filter = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(provinance, region, place, targetElement) {
+    var provinanceElement, regionElement, placeElement, filterButton, filterButtonItself, selectMessage, myHeaders, reqBody, requestOptions, response, data, regions, regionsSelectorData, places, placesSelectoData;
+    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
+      while (1) {
+        switch (_context12.prev = _context12.next) {
+          case 0:
+            provinanceElement = document.querySelector('#bolge');
+            regionElement = document.querySelector('#il');
+            placeElement = document.querySelector('#ilce');
+            filterButton = document.querySelector('.clean-filters');
+            filterButtonItself = document.querySelector('.clean-filters > button');
+            selectMessage = "<option value=\"\" default>Se\xE7iniz</option>";
+
+            if (targetElement.id === 'bolge') {
+              region = '';
+              place = '';
+              regionElement.innerHTML = selectMessage;
+              placeElement.innerHTML = selectMessage;
+              selectorDisabler();
+            }
+
+            if (targetElement.id === 'il') {
+              place = '';
+              placeElement.innerHTML = selectMessage;
+              selectorDisabler();
+            }
+
+            if (!(provinance === '' && region === '' && place === '')) {
+              _context12.next = 12;
+              break;
+            }
+
+            resetFilters();
+            kamplist();
+            return _context12.abrupt("return");
+
+          case 12:
+            myHeaders = new Headers();
+            myHeaders.append('Accept', '*/*');
+            myHeaders.append('Content-Type', 'application/json');
+            myHeaders.append('Accept-Encoding', 'gzip, deflate, br');
+            reqBody = {
+              region: region,
+              provinance: provinance,
+              place: place
+            };
+            requestOptions = {
+              method: 'POST',
+              headers: myHeaders,
+              redirect: 'follow',
+              body: JSON.stringify(reqBody)
+            };
+            _context12.next = 20;
+            return fetch(backendOrigin + '/camps/filter', requestOptions);
+
+          case 20:
+            response = _context12.sent;
+            _context12.next = 23;
+            return response.json();
+
+          case 23:
+            data = _context12.sent;
+
+            if (data.success) {
+              _context12.next = 30;
+              break;
+            }
+
+            resetFilters();
+            kamplist();
+            return _context12.abrupt("return");
+
+          case 30:
+            if (provinanceElement.selectedIndex > 0) {
+              filterButton.classList.add('filtered');
+              filterButtonItself.disabled = false;
+            }
+
+            if (provinance !== '' && region === '') {
+              regions = data.data.map(function (d) {
+                return d.region;
+              });
+              regionsSelectorData = Array.from(new Set(regions)).sort().filter(function (v) {
+                return v != undefined;
+              });
+              regionElement.innerHTML = selectMessage;
+              regionsSelectorData.forEach(function (d) {
+                regionElement.insertAdjacentHTML('beforeend', "<option value=\"".concat(d, "\">").concat(d, "</option>"));
+              });
+            }
+
+            if (region !== '' && place === '') {
+              places = data.data.map(function (d) {
+                return d.place;
+              });
+              placesSelectoData = Array.from(new Set(places)).sort().filter(function (v) {
+                return v != undefined;
+              });
+              placeElement.innerHTML = selectMessage;
+              placesSelectoData.forEach(function (d) {
+                placeElement.insertAdjacentHTML('beforeend', "<option value=\"".concat(d, "\">").concat(d, "</option>"));
+              });
+            }
+
+          case 33:
+            return _context12.abrupt("return", data.data);
+
+          case 34:
+          case "end":
+            return _context12.stop();
+        }
+      }
+    }, _callee12);
+  }));
+  return _filter.apply(this, arguments);
 }
