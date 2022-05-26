@@ -114,12 +114,39 @@
   }
 }
 
+@media only screen and (max-width: 860px){
+  .filter{
+    display: flex;
+    justify-content: space-between;
+    .selector {
+      margin-right: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      & select {
+        padding: 0 0;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 690px){
+  .card {
+    margin-top: .3rem;
+    border-radius: .3rem;
+    box-shadow: 0 2px 5px rgba($color-white-dark, 0.3);
+  }
+}
+
 .list {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 1.5rem;
   .card {
+    border-radius: .3rem;
+    box-shadow: 0 2px 5px rgba($color-white-dark, 0.3);
     flex: 0 0 325px;
     height: 400px;
     position: relative;

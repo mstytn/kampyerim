@@ -114,3 +114,129 @@ a, a:visited {
 a:hover {
   color: $color-secondary;
 }
+
+footer {
+  background-color: $color-black-light;
+  h4 {
+    margin-bottom: .8rem;
+    font-size: 1.1rem;
+  }
+  margin-top: 5rem;
+  color: $color-white;
+  padding: 2rem 0;
+  padding-top: 4rem;
+  text-align: left;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  .footer-row {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: .5rem;
+    &:nth-child(2) {
+      margin-top: 2rem;
+      width: 50%;
+    }
+  }
+  .footer-col {
+    width: calc((100% - 30ch - 3rem) / 3);
+  }
+  .footer-col.links {
+    width: 30ch;
+  }
+  .footer-col-copy{
+    width: 100%;
+    text-align: center;
+  }
+
+  .footer-col ul {
+    width: 30ch;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    gap: .5rem;
+    & li {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+      display: block;
+    }
+  }
+
+}
+
+@media only screen and (max-width: 860px) {
+  footer .footer-row {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    gap: 2rem;
+    padding: .5rem;
+    &:nth-child(2) {
+      margin-top: 2rem;
+      width: 90%;
+    }
+    .footer-col {
+      width: 100%;
+      text-align: center;
+      & ul {
+        margin: 0 auto;
+      }
+    }
+  }
+
+  .random-camp {
+    margin-top: 3rem;
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      & > h2 {
+        font-size: 2rem;
+        color: $color-primary;
+      }
+      .ra {
+        text-align: center;
+        padding: 0 1rem;
+      }
+      .location {
+        color: $color-secondary;
+      }
+    }
+    .page-info {
+      margin-top: 2rem;
+      height: 100%;
+      width: 100%;
+      position: relative;
+      padding: 1rem;
+      background-color: rgba($color-white, .8);
+      .page-info-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: space-between;
+        width: 100%;
+        & > p {
+          text-align: justify;
+        }
+      }
+      .rp {
+        text-indent: 3ch;
+      }
+      & > img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        z-index: -1;
+      }
+    }
+    
+  }
+  
+}
