@@ -49,5 +49,4 @@ campSchema.statics.getProvinances = async function() {
 
 const Camp = model('camp', campSchema)
 
-
 module.exports = Camp
