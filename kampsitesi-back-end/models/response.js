@@ -1,4 +1,4 @@
-const Camp = require('./camp')
+const Camp = require('./campmodel')
 const qOptions = require('./querylimiter')
 const { findPlace } = require('./mapbox')
 
