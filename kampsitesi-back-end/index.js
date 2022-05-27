@@ -26,8 +26,10 @@ const CampResponse = require('./models/response')
 // })
 
 // op.parseWeatherData(require('./forecastdata.json'))
+// `mongodb://localhost:27017/${process.env.DB}`
+const mongostr = process.env.MONGO_STR || process.env.DB
 
-mongoose.connect(`mongodb://localhost:27017/${process.env.DB}`)
+mongoose.connect(mongostr)
   .then(() => console.log('mongoose Connected'))
   .catch(err => console.error(err))
 
@@ -45,6 +47,8 @@ app.use(express.json())
 app.get('/', (req, res) => {
   // BUG: REPLACE - ROMVE - DO SOMETHING
   // Camp.find({}).then(data => {res.json(new CampResponse(true, data.length, data))}).catch(e => {res.status(500).json(new CampResponse(false, 0, e.message))})
+  // const data = require('./mongodmp.json')
+  // Camp.insertMany(data).then(console.log).catch(console.error)
   res.send('Hello')
 })
 
