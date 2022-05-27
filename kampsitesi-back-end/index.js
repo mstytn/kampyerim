@@ -1,13 +1,14 @@
 // jshint ignore: start
 
 require('dotenv').config()
+const path = require('path')
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
-const Camp = require('./models/camp.js')
-const CampResponse = require('./models/response.js')
+const Camp = require(path.join(__dirname, './models/camp'))
+const CampResponse = require(path.join(__dirname, './models/response'))
 // const { getDirections } = require('./models/mapbox')
 // const qOptions = require('./models/querylimiter')
 // const Op = require('./models/openweather')
