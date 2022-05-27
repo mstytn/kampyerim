@@ -224,7 +224,7 @@ var FeaturedCaps = /*#__PURE__*/function () {
               case 2:
                 data = _context4.sent;
                 data.forEach(function (d, i) {
-                  if (i < 4) _this2.fCamps += "\n          <div class=\"featured-camp\">\n            <div class=\"featured-camp__img\">\n              <img src=\"".concat(d.images[0], "\" alt=\"").concat(d.name.toLowerCase(), "\">\n              </div>\n            <img class=\"dummy\" src=\"imgs/dummy.png\" alt=\"dummy\">\n            <div class=\"featured-camp__info\">\n              <h3>").concat(d.name.toLowerCase(), "</h3>\n              <p><i class=\"bi bi-geo-alt-fill\"></i> ").concat(d.region, "</p>\n            </div>\n          </div>\n        ");
+                  if (i < 4) _this2.fCamps += "\n          <div class=\"featured-camp\">\n            <div class=\"featured-camp__img\">\n              <img src=\"".concat(d.images[0], "\" alt=\"").concat(d.name.toLowerCase(), "\">\n              </div>\n            <img class=\"dummy\" src=\"imgs/loader.gif\" alt=\"dummy\">\n            <div class=\"featured-camp__info\">\n              <h3>").concat(d.name.toLowerCase(), "</h3>\n              <p><i class=\"bi bi-geo-alt-fill\"></i> ").concat(d.region, "</p>\n            </div>\n          </div>\n        ");
                 });
                 return _context4.abrupt("return", this);
 
@@ -414,9 +414,11 @@ function _showMap() {
 }
 
 var uloc = new UserLocation();
-var map; // showMap().then(mp => {map = mp})
+var map; // TODO: THIS IS THE MAP
+// showMap().then(mp => {map = mp})
 
-var fc = new FeaturedCaps('.featured-campgrid');
+var fc = new FeaturedCaps('.featured-campgrid'); //SECTION: Unintentionally created entry point for appjs
+
 fc.featuredCampCreator().then( /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(o) {
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
@@ -498,7 +500,7 @@ function _kamplist() {
 
           case 3:
             nearme = _context8.sent;
-            nFilt = nearme.data.filter(function (v, i) {
+            nFilt = nearme.data.filter(function (_v, i) {
               return i < 9;
             });
             createKampList(nFilt, "Size en yak\u0131n ".concat(nFilt.length, " kamp alan\u0131 g\xF6r\xFCnt\xFCleniyor"));
@@ -528,8 +530,8 @@ function createKampList(camps, message) {
   camps.forEach(function (v) {
     lister.insertAdjacentHTML('beforeend', campCard(v));
   });
-  if (messageType = 'info') filterResonseElement.classList.remove('error');
-  if (messageType == 'error') filterResonseElement.classList.add('error');
+  if (messageType === 'info') filterResonseElement.classList.remove('error');
+  if (messageType === 'error') filterResonseElement.classList.add('error');
   filterResonseElement.innerText = message;
 }
 
@@ -590,7 +592,7 @@ function campCard(data) {
   }
 
   var theImage = k.images.length === 0 ? "imgs/dummy.png" : k.images[0];
-  return "\n      <div class=\"card\">\n        <img src=\"".concat(theImage, "\" alt=\"dummy\">\n        <div class=\"card-info\">\n          <h4>").concat(k.name, "</h4>\n          <p class=\"location\"><i class=\"bi bi-geo-alt-fill\"></i><span class=\"rl\"></span>").concat(k.region, "</p>\n          <p class=\"description\">").concat(k.description.substring(0, 400), "...</p>\n          <a href=\"camp.html?id=").concat(k._id, "\">daha fazla...</a>\n          ").concat(d, "\n        </div>\n      </div>\n    ");
+  return "\n      <div class=\"card\">\n        <img src=\"".concat(theImage, "\" alt=\"").concat(k.name, "\">\n        <img class=\"loader\" src=\"imgs/loader.gif\" alt=\"preloader\">\n        <div class=\"card-info\">\n          <h4>").concat(k.name, "</h4>\n          <p class=\"location\"><i class=\"bi bi-geo-alt-fill\"></i><span class=\"rl\"></span>").concat(k.region, "</p>\n          <p class=\"description\">").concat(k.description.substring(0, 400), "...</p>\n          <a href=\"camp.html?id=").concat(k._id, "\">daha fazla...</a>\n          ").concat(d, "\n        </div>\n      </div>\n    ");
 }
 
 function addBolgeFilteringSelector() {
@@ -642,7 +644,7 @@ function _addBolgeFilteringSelector() {
   return _addBolgeFilteringSelector.apply(this, arguments);
 }
 
-document.querySelector('.clean-filters > button').addEventListener('click', function (e) {
+document.querySelector('.clean-filters > button').addEventListener('click', function () {
   resetFilters();
 });
 

@@ -1,5 +1,6 @@
 @use './abstracts' as *;
 @use './mixins' as *;
+@use './animations' as *;
 
 body {
   margin: 0px;
@@ -55,22 +56,29 @@ nav {
 }
 
 .map {
-  background-color: $color-secondary;
+  background-color: $color-white-dark;
   height: 50vh;
   width: 100%;
   padding: 0;
   margin: 0;
 }
 
+.colorize {
+  background-color: #eee;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  margin-top: 3rem;
+}
+
 .random-camp {
-  margin-top: 6rem;
+
   .page-header {
     display: flex;
     flex-direction: column;
     align-items: center;
     & > h2 {
       font-size: 2.2rem;
-      color: $color-primary;
+      color: $color-black;
     }
     .location {
       color: $color-secondary;
@@ -104,7 +112,6 @@ nav {
 }
 
 a, a:visited {
-  color: $color-black-light;
   text-decoration: none;
   color: $color-primary;
   transition: color 300ms;
@@ -168,75 +175,22 @@ footer {
 
 }
 
-@media only screen and (max-width: 860px) {
-  footer .footer-row {
-    width: 90%;
-    margin: 0 auto;
-    display: flex;
-    gap: 2rem;
-    padding: .5rem;
-    &:nth-child(2) {
-      margin-top: 2rem;
-      width: 90%;
-    }
-    .footer-col {
-      width: 100%;
-      text-align: center;
-      & ul {
-        margin: 0 auto;
-      }
-    }
+.videoholder {
+  background-color: $color-black;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  &.hidden {
+    display: none;
   }
+}
 
-  .random-camp {
-    margin-top: 3rem;
-    .page-header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      & > h2 {
-        font-size: 2rem;
-        color: $color-primary;
-      }
-      .ra {
-        text-align: center;
-        padding: 0 1rem;
-      }
-      .location {
-        color: $color-secondary;
-      }
-    }
-    .page-info {
-      margin-top: 2rem;
-      height: 100%;
-      width: 100%;
-      position: relative;
-      padding: 1rem;
-      background-color: rgba($color-white, .8);
-      .page-info-left {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: space-between;
-        width: 100%;
-        & > p {
-          text-align: justify;
-        }
-      }
-      .rp {
-        text-indent: 3ch;
-      }
-      & > img {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        object-fit: cover;
-        z-index: -1;
-      }
-    }
-    
-  }
-  
+.nooverflow {
+  overflow: hidden;
 }

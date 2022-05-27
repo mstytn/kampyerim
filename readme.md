@@ -1,4 +1,6 @@
-# **Kampyerim** *Front-End* Back-End* Web Uygulaması (İsmek Kurs Bitirme Ödevi)
+# **Kampi** *Front-End* Back-End* Web Uygulaması (İsmek Kurs Bitirme Ödevi)
+
+<img src="./kampsitesi-front-end/build/imgs/logotype.svg" height="75">
 
 !!!Geliştirme Aşamasında!!!
 
@@ -41,4 +43,4 @@ Kamp alanı bilgileri [Google Haritalar - Kamp Yerleri - Niyazi Solak](https://w
 
 Teşekkürler | Mustafa Yatağan
 
-<sub>Bu Redme <span style="color:limegreen">*21.05.2022*</span> tarihinde hazırlanmıştır, geliştirme sırasında değişecektir.</sub>
+<sub>Bu Redme <span style="color:limegreen">*28.05.2022*</span> tarihinde hazırlanmıştır, geliştirme sırasında değişecektir.</sub>

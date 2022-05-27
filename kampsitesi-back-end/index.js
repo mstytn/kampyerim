@@ -32,7 +32,7 @@ mongoose.connect(`mongodb://localhost:27017/${process.env.DB}`)
   .catch(err => console.error(err))
 
 const corsOptions = {
-  origin: process.env.origin,
+  origin: process.env.ORIGIN,
   credentials:true,
   optionSuccessStatus: 200,
 }
@@ -44,7 +44,8 @@ app.use(express.json())
 
 app.get('/', (req, res) => {
   // BUG: REPLACE - ROMVE - DO SOMETHING
-  Camp.find({}).then(data => {res.json(new CampResponse(true, data.length, data))}).catch(e => {res.status(500).json(new CampResponse(false, 0, e.message))})
+  // Camp.find({}).then(data => {res.json(new CampResponse(true, data.length, data))}).catch(e => {res.status(500).json(new CampResponse(false, 0, e.message))})
+  res.send('Hello')
 })
 
 app.post('/camps/nearme', (req, res) => {
@@ -111,6 +112,6 @@ app.get('*', function(req, res){
   res.status(404).json(new CampResponse(false, 0, [{message: '404 İstek Bulunamadı'}]));
 });
 
-app.listen(process.env.port, () => {
-  console.log(`Example app listening on port ${process.env.port}`)
+app.listen(process.env.PORT, () => {
+  console.log(`Example app listening on port ${process.env.PORT}`)
 })

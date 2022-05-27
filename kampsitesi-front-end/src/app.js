@@ -1,13 +1,13 @@
 const backendOrigin = 'http://localhost:3000'
 const myHeaders = new Headers();
-  myHeaders.append('Accept', '*/*');
-  myHeaders.append('Content-Type', 'application/json')
-  myHeaders.append('Accept-Encoding', 'gzip, deflate, br');
-  const requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-    redirect: 'follow',
-  }
+myHeaders.append('Accept', '*/*');
+myHeaders.append('Content-Type', 'application/json')
+myHeaders.append('Accept-Encoding', 'gzip, deflate, br');
+const requestOptions = {
+  method: 'GET',
+  headers: myHeaders,
+  redirect: 'follow',
+}
 
 class UserLocation {
   constructor() {
@@ -48,7 +48,6 @@ class UserLocation {
   }
 }
 
-
 class FeaturedCaps {
   constructor(featuredListQuery) {
     this.featuredList = document.querySelector(featuredListQuery)
@@ -86,7 +85,7 @@ class FeaturedCaps {
             <div class="featured-camp__img">
               <img src="${d.images[0]}" alt="${d.name.toLowerCase()}">
               </div>
-            <img class="dummy" src="imgs/dummy.png" alt="dummy">
+            <img class="dummy" src="imgs/loader.gif" alt="dummy">
             <div class="featured-camp__info">
               <h3>${d.name.toLowerCase()}</h3>
               <p><i class="bi bi-geo-alt-fill"></i> ${d.region}</p>
@@ -255,8 +254,11 @@ async function showMap() {
 
 const uloc = new UserLocation()
 let map
+// TODO: THIS IS THE MAP
 // showMap().then(mp => {map = mp})
 const fc = new FeaturedCaps('.featured-campgrid')
+
+//SECTION: Unintentionally created entry point for appjs
 fc.featuredCampCreator().then(async (o) => {
   try {
     await uloc.requestLocation()
@@ -291,7 +293,7 @@ async function kamplist() {
   if (uloc.isPointGathered)
   {
     const nearme = await requestNearMe()
-    const nFilt = nearme.data.filter((v,i) => i < 9)
+    const nFilt = nearme.data.filter((_v,i) => i < 9)
     createKampList(nFilt, `Size en yakın ${nFilt.length} kamp alanı görüntüleniyor`)
   } else {
     const data = fc.data.slice(0, 9)
@@ -307,9 +309,9 @@ function createKampList(camps, message, messageType = 'info', additive = false) 
   camps.forEach(v => {
       lister.insertAdjacentHTML('beforeend', campCard(v))
   })
-  if (messageType = 'info')
+  if (messageType === 'info')
     filterResonseElement.classList.remove('error')
-  if (messageType == 'error')
+  if (messageType === 'error')
     filterResonseElement.classList.add('error')
   filterResonseElement.innerText = message
 }
@@ -346,7 +348,8 @@ function campCard(data) {
 
   return `
       <div class="card">
-        <img src="${theImage}" alt="dummy">
+        <img src="${theImage}" alt="${k.name}">
+        <img class="loader" src="imgs/loader.gif" alt="preloader">
         <div class="card-info">
           <h4>${k.name}</h4>
           <p class="location"><i class="bi bi-geo-alt-fill"></i><span class="rl"></span>${k.region}</p>
@@ -357,7 +360,6 @@ function campCard(data) {
       </div>
     `
 }
-
 
 async function addBolgeFilteringSelector() {
   const response = await fetch(backendOrigin + '/provinances', requestOptions)
@@ -375,7 +377,7 @@ async function addBolgeFilteringSelector() {
   placeElement.addEventListener('change', e => {selectorUpdater(e.target)})
 }
 
-document.querySelector('.clean-filters > button').addEventListener('click', e => {
+document.querySelector('.clean-filters > button').addEventListener('click', () => {
   resetFilters()  
 })
 
@@ -406,7 +408,6 @@ async function selectorUpdater(targetElement) {
     const message = `${provinanceElement.value} ${regionElement.value} ${placeElement.value} için ${data.length} kamp alanı liteleniyor`
     createKampList(data, message)
   }
-    
 }
 
 function selectorDisabler() {
@@ -472,8 +473,6 @@ async function filter(provinance, region, place, targetElement) {
       redirect: 'follow',
       body: JSON.stringify(reqBody)
     }
-
-
     const response = await fetch(backendOrigin + '/camps/filter', requestOptions)
     const data = await response.json()
     if (!data.success) {

@@ -1,0 +1,217 @@
+@use './abstracts' as *;
+@use './mixins' as *;
+@use './animations' as *;
+
+@media only screen and (max-width: 1100px) {
+  .container {
+    margin: 0 2rem;
+  }
+  .featured-campgrid {
+    margin-right: 1rem;
+    margin-left: 1rem;
+  }
+}
+
+@media only screen and (max-width: 860px) {
+
+  footer .footer-row {
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    gap: 2rem;
+    padding: .5rem;
+    &:nth-child(2) {
+      margin-top: 2rem;
+      width: 90%;
+    }
+    .footer-col {
+      width: 100%;
+      text-align: center;
+      & ul {
+        margin: 0 auto;
+      }
+    }
+  }
+
+  .random-camp {
+    margin-top: 3rem;
+    .page-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      & > h2 {
+        font-size: 2rem;
+        text-align: center;
+        color: $color-primary;
+      }
+      .ra {
+        text-align: center;
+        padding: 0 1rem;
+      }
+      .location {
+        color: $color-secondary;
+      }
+    }
+    .page-info {
+      margin-top: 2rem;
+      height: 100%;
+      width: 100%;
+      position: relative;
+      padding: 1rem;
+      .page-info-left {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: space-between;
+        width: 100%;
+        & > p {
+          text-align: justify;
+        }
+      }
+      .rp {
+        text-indent: 3ch;
+      }
+      & > img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        z-index: -1;
+      }
+    }
+    
+  }
+
+  .filter{
+    display: flex;
+    justify-content: space-between;
+    .selector {
+      margin-right: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      & select {
+        padding: 0 0;
+        font-size: 0.8rem;
+      }
+      & label {
+        font-size: 0.8rem;
+      }
+    }
+  }
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  .card {
+    border-radius: .3rem;
+    border-top-right-radius: 1rem;
+    box-shadow: 0 2px 5px rgba($color-white-dark, 0.3);
+    flex: 0 0 325px;
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    transform: translateY(0);
+    opacity: 0;
+    background-color: rgba(#eee, .5);
+    animation: cardanim 900ms ease;
+    animation-fill-mode: forwards;
+    & img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      top: 0;
+      left: 0;
+      
+    }
+    & img.loader {
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%);
+      z-index: -1;
+    }
+    & .card-info {
+      &:not(a) {
+        cursor: default;
+      }
+      position: absolute;
+      padding: 1rem;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 30%;
+      background-color: rgba($color-white, 0.95);
+      transition: height 500ms;
+      border-top: 5px solid $color-primary;
+      border-top-right-radius: 2rem;
+      & .distance {
+        position: absolute;
+        bottom: 0rem;
+        left: 0rem;
+        text-align: right;
+        padding: 1rem;
+        font-size: 0.8rem;
+      }
+      & .description {
+        margin-top: .5rem;
+        font-size: 0.9rem;
+        opacity: 0;
+        transition: opacity 500ms;
+      }
+      a {
+        background: linear-gradient(rgba($color-white, 0.1), $color-white);
+        position: absolute;
+        bottom: 0rem;
+        right: 0rem;
+        width: 100%;
+        text-align: right;
+        padding: 1rem;
+      }
+    }
+    &:hover {
+      & .card-info {
+        height: 100%;
+        border-top-right-radius: 0;
+        & .description {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 753px){
+  .list {
+    display: flex;
+    justify-content: center;
+    gap: 0rem;
+    .card {
+      margin-top: 1rem;
+      width: 100%;
+      flex: 1 1 100%;
+    }
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .random-camp {
+    margin-top: 0;
+  }
+  .colorize {
+    margin-top: 0;
+  }
+  .featured-campgrid {
+    display: none;
+  }
+}

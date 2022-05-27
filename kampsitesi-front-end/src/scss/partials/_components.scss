@@ -1,5 +1,6 @@
 @use './abstracts' as *;
 @use './mixins' as *;
+@use './animations' as *;
 
 .featured-campgrid {
   max-width: 900px;
@@ -8,19 +9,38 @@
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 200px);
   gap: 1rem;
-  margin-top: 1rem;
+  margin-top: -2rem;
 }
+
+
 
 .featured-camp {
   position: relative;
+  border-radius: .3rem;
+  overflow: hidden;
+  cursor: pointer;
+  &:hover {
+    .featured-camp__img img {
+      transform: scale(1.2);
+    }
+    .featured-camp__info {
+      & > h3 {
+        letter-spacing: 1px;
+      }
+
+    }
+  }
   .dummy {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
+    width: 50%;
+    height: 50%;
+    aspect-ratio: 1 / 1;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50% ,-50%);
     object-fit: cover;
     z-index: -1;
+
   }
   &__info {
     position: absolute;
@@ -31,9 +51,11 @@
     justify-content: center;
     align-items: center;
     & > h3 {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       text-transform: capitalize;
       text-align: center;
+      margin: 0 1rem;
+      transition: letter-spacing 500ms ease-in-out;
     }
     & > p {
       position: absolute;
@@ -46,17 +68,18 @@
     position: relative;
     width: 100%;
     height: 100%;
-
     & img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      filter: brightness(60%);
+      transition: transform 500ms ease-in-out;
     }
     &:after {
       content: '';
       position: absolute;
       @include abslute-cover;
-      background: radial-gradient(rgba(black, .5), rgba($color-base, .2));
+      background: radial-gradient(rgba(black, .6), rgba($color-black-light, .2));
       background-color: rgba($color-base, .2);
     }
   }
@@ -67,6 +90,8 @@
   &:nth-of-type(3) {
     grid-column: 1 / span 2;
   }
+
+
 }
 
 .more {
@@ -76,9 +101,7 @@
   transition: color 300ms, background-color 300ms;
   margin-top: 1rem;
   align-self: flex-end;
-  &:hover {
-    background-color: #ccc;
-  }
+
 }
 
 .kamplistesi {
@@ -88,6 +111,20 @@
     margin-bottom: 1.5rem;
     font-size: .8rem;
 
+  }
+  
+}
+
+.liste-header {
+  margin: 4rem 0;
+  margin-top: 8rem;
+  h2 {
+    text-align: center;
+  }
+
+  p{
+    margin-top: 1rem;
+    text-align: center;
   }
 }
 
@@ -117,109 +154,6 @@
       font-size: 1rem;
       padding: .2rem 1rem;
     }
-  }
-}
-
-@media only screen and (max-width: 860px){
-  .filter{
-    display: flex;
-    justify-content: space-between;
-    .selector {
-      margin-right: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      & select {
-        padding: 0 0;
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 690px){
-  .card {
-    margin-top: .3rem;
-  }
-}
-
-.list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1.5rem;
-  .card {
-    border-radius: .3rem;
-    box-shadow: 0 2px 5px rgba($color-white-dark, 0.3);
-    flex: 0 0 325px;
-    height: 400px;
-    position: relative;
-    overflow: hidden;
-    transform: translateY(0);
-    opacity: 0;
-    animation: cardanim 900ms ease;
-    animation-fill-mode: forwards;
-    & img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    & .card-info {
-      &:not(a) {
-        cursor: default;
-      }
-      position: absolute;
-      padding: 1rem;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 30%;
-      background-color: rgba($color-white, 0.95);
-      transition: height 500ms;
-      border-top: 5px solid $color-secondary;
-      & .distance {
-        position: absolute;
-        bottom: 0rem;
-        left: 0rem;
-        text-align: right;
-        padding: 1rem;
-        font-size: 0.8rem;
-      }
-      & .description {
-        margin-top: .5rem;
-        font-size: 0.9rem;
-        opacity: 0;
-        transition: opacity 500ms;
-      }
-      a {
-        background: linear-gradient(rgba($color-white, 0.1), $color-white);
-        position: absolute;
-        bottom: 0rem;
-        right: 0rem;
-        width: 100%;
-        text-align: right;
-        padding: 1rem;
-      }
-    }
-    &:hover {
-      & .card-info {
-        height: 100%;
-        & .description {
-          opacity: 1;
-        }
-      }
-    }
-  }
-}
-
-@keyframes cardanim {
-  from {
-    transform: translateY(15px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
   }
 }
 
