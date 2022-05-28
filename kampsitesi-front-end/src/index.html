@@ -17,6 +17,18 @@
   <aside class="videoholder hidden">
     <img src="imgs/loader.gif" alt="loader">
   </aside>
+  <div class="navholder">
+    <nav class="nav">
+      <button><i class="bi bi-list"></i></button>
+    </nav>
+    <div class="navnav">
+      <ul class="navul">
+        <li><a href="#" data-link="Anasayfa">Anasayfa</a></li>
+        <li><a href="#ara" data-link="Kamplar">Kamplar</a></li>
+        <li><a href="#iletisim" data-link="İletişim">İletişim</a></li>
+      </ul>
+    </div>
+  </div>
   <main>
     <div class="container">
       <nav>
@@ -56,7 +68,7 @@
     <div class="container kamplistesi">
       <div class="liste-header">
         <h2>Hayalinizdeki kamp yerini arayın...</h2>
-        <p>Bu listeden Türkiyenin dört bir yanındaki kapmları bulup hakkında bilgi alabilirsiniz.</p>
+        <p id="ara">Bu listeden Türkiyenin dört bir yanındaki kapmları bulup hakkında bilgi alabilirsiniz.</p>
       </div>
       <div class="filter">
 
@@ -92,7 +104,7 @@
       </div>
     </div>
   </main>
-  <footer>
+  <footer id="iletisim">
     <!-- <div class="container"> -->
       <div class="footer-row">
         <div class="footer-col">
@@ -114,6 +126,7 @@
               <li><a href="https://github.com/mstytn/kampyerim/tree/main/kampsitesi-front-end" traget="_blank"><i class="bi bi-github"></i> github : front-end</a></li>
               <li><a href="mailto:mustafayatagan@gmail.com"><i class="bi bi-envelope-fill"></i> mustafayatagan@gmail.com</a></li>
               <li><a href="https://enstitu.ibb.istanbul/portal/egitim_detay.aspx?BransCode=3591" traget="_blank"><i class="bi bi-mortarboard-fill"></i> ismek: frontend</a></li>
+              <li><img src="imgs/logotype-disi.svg" alt="kampi logo" width="65%"></li>
             </ul>
           </div>
         </div>
@@ -128,6 +141,7 @@
           </div>
         </div>
       <!-- </div> -->
+      <a href="#" class="totop" title="Başa Dön"><i class="bi bi-caret-up"></i></a>
   </footer>
   <script src="app.js"></script>
 </body>

@@ -81,7 +81,7 @@ class FeaturedCaps {
     data.forEach((d, i) => {
       if (i < 4)
         this.fCamps += `
-          <div class="featured-camp">
+          <div class="featured-camp" data-link="${d._id}">
             <div class="featured-camp__img">
               <img src="${d.images[0]}" alt="${d.name.toLowerCase()}">
               </div>
@@ -101,6 +101,37 @@ class FeaturedCaps {
     {
       this.featuredList.innerHTML = ''
       this.featuredList.insertAdjacentHTML('afterbegin', this.fCamps)
+      this.featuredList.addEventListener('mouseover', async (e) => {
+        const id = e.target.getAttribute('data-link')
+        if (id) {
+          const res = await fetch(backendOrigin + '/camps/camp/' + id)
+          const data = await res.json()
+          if (data)
+            if (data.success) {
+              const flyer = data.data.location.coordinates
+              if (map) {
+                map.flyTo({
+                  center: flyer,
+                  zoom: 9,
+                  essential: true // this animation is considered essential with respect to prefers-reduced-motion
+                  });
+              }
+            }
+        }
+      })
+      this.featuredList.addEventListener('mouseout', () => {
+        if (map) {
+          map.flyTo({
+            center: uloc.point,
+            zoom: 4,
+            essential: true // this animation is considered essential with respect to prefers-reduced-motion
+            });
+        }
+      })
+      this.featuredList.addEventListener('click', async (e) => {
+        const id = e.target.getAttribute('data-link')
+        document.location.href = '/camp.html?id='+id
+      })
     }
   }
 }
@@ -120,25 +151,32 @@ async function showMap() {
 
   mapboxgl.accessToken = mapboxToken.data
 
-  await uloc.requestLocation()
+  try {
+    await uloc.requestLocation()
+  } catch {}
   const map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/light-v10',
     center: uloc.point,
-    zoom: 5
+    zoom: 4
   });
 
   const response = await fetch(backendOrigin + '/camps/cluster', requestOptions)
   const cluster = await response.json()
 
   map.on('load', async function() {
-    map.addSource('kampyerleri', {
+      map.addSource('kampyerleri', {
       type: 'geojson',
       data: cluster.data,
       cluster: true,
       clusterMaxZoom: 8,
       clusterRadius: 50
     })
+
+    map.setLayoutProperty('country-label', 'text-field', [
+      'get',
+      `name_tr`
+      ])
 
     map.addLayer({
       id: 'clusters',
@@ -221,11 +259,13 @@ async function showMap() {
   // the unclustered-point layer, open a popup at
   // the location of the feature, with
   // description HTML from its properties.
-  map.on('click', 'unclustered-point', (e) => {
+  map.on('click', 'unclustered-point', async (e) => {
     const coordinates = e.features[0].geometry.coordinates.slice();
-    const mag = e.features[0].properties.mag;
-    const tsunami =
-      e.features[0].properties.tsunami === 1 ? 'yes' : 'no';
+    const id = e.features[0].properties._id;
+    const res = await fetch(backendOrigin + '/camps/camp/' + id)
+    const data = await res.json()
+    const {name, _id, place, region, images} = data.data
+
 
     // Ensure that if the map is zoomed out such that
     // multiple copies of the feature are visible, the
@@ -237,7 +277,11 @@ async function showMap() {
     new mapboxgl.Popup()
       .setLngLat(coordinates)
       .setHTML(
-        `magnitude: ${mag}<br>Was there a tsunami?: ${tsunami}`
+        `<h3>${name}</h3>
+        <img src="${images[0]}" alt="${name}" width="100%">
+        <p>${place} / ${region}</p>
+        <a href="camp.html?id=${_id}">daha fazla...</a>
+        `
       )
       .addTo(map);
   });
@@ -252,6 +296,78 @@ async function showMap() {
   return map
 }
 
+class Menugator {
+  constructor(menuselector, displayClass) {
+    this.menuElement = document.querySelector(menuselector)
+    this.buttonElement = document.querySelector(menuselector + ' button')
+    this.iconElement = document.querySelector(menuselector + ' button > i')
+    this.insideMenuElement = document.querySelector(menuselector + ' .navnav')
+    this.isOpen = false
+    this.isHover = false
+    this.displayClass = displayClass
+    this.#hook()
+  }
+
+  toggle() {
+    if (this.isOpen) {
+      this.menuElement.classList.remove(this.displayClass)
+      this.buttonElement.classList.remove('trans')
+      this.iconElement.classList.remove('bi-x')
+      this.iconElement.classList.add('bi-list')
+      this.insideMenuElement.classList.remove('show')
+      this.isOpen = false
+    } else {
+      this.menuElement.classList.add(this.displayClass)
+      this.buttonElement.classList.add('trans')
+      this.iconElement.classList.add('bi-x')
+      this.iconElement.classList.remove('bi-list')
+      this.insideMenuElement.classList.add('show')
+      this.isOpen = true
+    }
+  }
+
+  #hook() {
+    if (this.menuElement) {
+      this.buttonElement.addEventListener('click', this.clickEvent)
+      this.buttonElement.addEventListener('mouseover', this.hoverEvent)
+      this.buttonElement.addEventListener('mouseout', this.hoverEvent)
+      document.querySelectorAll('.navul > li > a').forEach(nv => {
+        nv.addEventListener('click', () => {
+          setTimeout(() => {
+            this.toggle()
+          }, 300)
+        })
+      })
+    }
+  }
+
+  clickEvent = (event) => {
+    this.toggle()
+  }
+
+  hoverEvent = (event) => {
+    if (event.type === 'mouseover')
+      this.isHover = true
+    else
+      this.isHover = false 
+    if (this.isHover) {
+      this.iconElement.classList.remove('bi-x', 'bi-list')
+      if (this.isOpen)
+        this.iconElement.classList.add('bi-caret-right')
+      else
+        this.iconElement.classList.add('bi-caret-left')
+    } else {
+      this.iconElement.classList.remove('bi-caret-left', 'bi-caret-right')
+      if (this.isOpen)
+        this.iconElement.classList.add('bi-x')
+      else
+        this.iconElement.classList.add('bi-list')
+    }
+  }
+}
+
+const menu = new Menugator('.navholder', 'shownav')
+
 const uloc = new UserLocation()
 let map
 // TODO: THIS IS THE MAP
@@ -263,7 +379,7 @@ fc.featuredCampCreator().then(async (o) => {
   try {
     await uloc.requestLocation()
   } catch {
-    console.log('cannot get user location')
+    // console.log('cannot get user location')
   }
   o.displayFeatured()
   randomCamp()

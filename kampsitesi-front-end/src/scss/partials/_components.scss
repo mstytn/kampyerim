@@ -19,6 +19,9 @@
   border-radius: .3rem;
   overflow: hidden;
   cursor: pointer;
+  & * {
+    pointer-events: none;
+  }
   &:hover {
     .featured-camp__img img {
       transform: scale(1.2);
@@ -27,7 +30,6 @@
       & > h3 {
         letter-spacing: 1px;
       }
-
     }
   }
   .dummy {
@@ -213,4 +215,123 @@
 
 .error {
   color: red;
+}
+
+
+
+.navholder {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 7rem;
+  height: 6rem;
+  overflow: hidden;
+  background-color: transparent;
+  border-radius: 5rem;
+  transition: background-color 50ms ease-in-out 0s, width 500ms ease-in-out 300ms, height 300ms ease-in-out, border-radius 600ms ease-in-out 200ms;
+  z-index: 9998;
+  .navnav {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin-top: 5rem;
+    width: 100%;
+    height: calc(100% - 5rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease-in-out 200ms;
+    &.show {
+      pointer-events: all;
+      opacity: 1;
+    }
+  }
+  nav.nav {
+    padding: 1rem;
+    position: absolute;
+    right: 1rem;
+    background-color: transparent;
+    button {
+      padding: .2rem .5rem;
+      font-size: 2rem;
+      background-color: transparent;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      transition: transform 500ms;
+      &.trans {
+        transform: rotate(360deg);
+      }
+      & > i {
+        pointer-events: none;
+
+      }
+      &:hover {
+        transform: rotate(0deg) scale(1.1);
+      }
+    }
+  }
+  .navul {
+    margin: 0;
+    padding: 0;
+    & > li {
+      list-style-type: none;
+      & > a {
+        &, &:visited {
+          position: relative;
+          text-transform: uppercase;
+          font-weight: 800;
+          font-size: 2rem;
+          text-align: center;
+          display: block;
+          padding: 1rem 2rem;
+          transition: color 300ms ease-in-out, font-size 300ms ease-in-out, transform 300ms ease-in-out, letter-spacing 300ms ease-in-out ;
+        }
+        &::after {
+          color: $color-white;
+          text-shadow: 0 0 2px black;
+          top: 50%;
+          left: 50%;
+          transform: translate(-53%, -40%);
+          position: absolute;
+          content: attr(data-link);
+          z-index: -1;
+          transition: color 300ms ease-in-out, font-size 300ms ease-in-out, transform 300ms ease-in-out ;
+        }
+        &::before {
+          color: $color-white;
+          text-shadow: 0 0 2px $color-primary;
+          top: 50%;
+          left: 50%;
+          transform: translate(-56%, -30%);
+          position: absolute;
+          content: attr(data-link);
+          z-index: -1;
+          transition: color 300ms ease-in-out, font-size 300ms ease-in-out, transform 300ms ease-in-out ;
+        }
+        &:hover {
+          font-size: 2.5rem;
+          letter-spacing: 5px;
+          &::after {
+            transform: translate(-53%, -50%);
+            font-size: 3rem;
+          }
+          &::before {
+            transform: translate(-56%, -50%);
+            font-size: 5rem;
+          }
+        }
+      }
+    }
+  }
+  &.shownav {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    background-color: rgba($color-white, .95);
+    backdrop-filter: blur(15px);
+    transition: background-color 100ms ease-in-out 300ms, width 300ms ease-in-out, height 500ms ease-in-out 300ms, border-radius 600ms ease-in-out 200ms;
+  }
 }

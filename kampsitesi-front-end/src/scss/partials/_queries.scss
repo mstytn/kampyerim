@@ -95,9 +95,11 @@
       align-items: flex-start;
       & select {
         padding: 0 0;
+        margin: 0;
         font-size: 0.8rem;
       }
       & label {
+        padding-left: .5ch;
         font-size: 0.8rem;
       }
     }

@@ -1,6 +1,8 @@
-# Kampyerim Web Uygulaması Back-End
+# Kampi Web Uygulaması Back-End
 
 [Kampyerim Okubeni](../readme.md) > Back-End Okubemi | [Front-End Okubeni](../kampsitesi-front-end/readme.md)
+
+<img src="../kampsitesi-front-end/build/imgs/logotype.svg" height="75">
 
 Bu back-end projesi İsmek Frnot-End developer bitirme projesi için back-end bilgilerini sağlaması için opsiyonel olarak geliştilidi.
 

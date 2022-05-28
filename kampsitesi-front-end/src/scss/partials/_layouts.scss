@@ -2,6 +2,18 @@
 @use './mixins' as *;
 @use './animations' as *;
 
+:root {
+  scroll-behavior: smooth;
+}
+
+.mapbox-improve-map {
+  display: none;
+}
+
+.mapboxgl-ctrl-attrib {
+  display: none;
+}
+
 body {
   margin: 0px;
   padding: 0px;
@@ -36,6 +48,7 @@ nav {
   }
   & > ul {
     margin: 0;
+    margin-right: 4rem;
     padding: 0;
     display: flex;
     & li {
@@ -124,6 +137,18 @@ a:hover {
 
 footer {
   background-color: $color-black-light;
+  position: relative;
+  .totop {
+    position: absolute;
+    right: 2rem;
+    top: 0;
+    font-size: 2rem;
+    padding: .5rem 1rem;
+    border-bottom-right-radius: 1rem;
+    background-color: $color-white;
+    box-shadow: 0 5px 5px rgba($color-black, 0.9);
+
+  }
   h4 {
     margin-bottom: .8rem;
     font-size: 1.1rem;
