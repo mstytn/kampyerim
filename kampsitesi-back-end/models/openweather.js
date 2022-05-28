@@ -42,9 +42,12 @@ module.exports = class OpenWeather {
   async getWeatherDataOnline(coordinates, zipcode) {
     const now = new Date()
     const weather = await this.getWeather(coordinates)
-    const rawDailyWeather = await this.getDailyWeather(zipcode)
-    const dailyWeather = this.parseWeatherData(rawDailyWeather)
+    let dailyWeather
     const expiration = new Date(now.getTime() + ( 3 * 60 * 60 * 1000)).getTime()
+    try {
+      const rawDailyWeather = await this.getDailyWeather(zipcode)
+      dailyWeather = this.parseWeatherData(rawDailyWeather)
+    } catch {}
     return {
       coordinates,
       zipcode,

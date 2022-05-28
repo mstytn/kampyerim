@@ -8,18 +8,14 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const Camp = require('./models/campmodel')
 const CampResponse = require('./models/response')
+const Op = require('./models/openweather')
+const op = new Op()
 // const { getDirections } = require('./models/mapbox')
 // const qOptions = require('./models/querylimiter')
-// const Op = require('./models/openweather')
 
 // const fs = require('fs')
 
-// const op = new Op()
-// op.getWeaterData([27.5380468, 36.6759442], 48900).then(
-//   data => { 
-//       console.log(data)
-//     }
-//   )
+
 
 // op.getDailyWeather(48900).then(data => {
 //   fs.writeFileSync('./forecastdata.json', JSON.stringify(data))
@@ -50,6 +46,13 @@ app.get('/', (req, res) => {
   // const data = require('./mongodmp.json')
   // Camp.insertMany(data).then(console.log).catch(console.error)
   res.send('Hello')
+})
+
+app.post('/weatherdata', async (req,res) => {
+  const { coordinates, postalcode } = req.body
+  console.log(coordinates.reverse(), postalcode)
+  const wData = await op.getWeaterData(coordinates.reverse(), postalcode)
+  res.json(new CampResponse(true, 1, wData))
 })
 
 app.post('/camps/nearme', (req, res) => {

@@ -1,0 +1,222 @@
+@use './partials/resets' as *;
+@use './partials/abstracts' as *;
+@use './partials/mixins' as *;
+
+body{
+  
+}
+
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: -1;
+  .preload-message {
+    margin-top: -5rem;
+  }
+}
+
+  .apppage {
+    display: none;
+    &.visible {
+      display: block;
+    }
+  }
+
+
+  .camp {
+    &__header {
+      background-color: $color-white;
+      padding: 4rem 2rem;
+      position: relative;
+      & .logo {
+        position: absolute;
+        right: 2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 50px;
+        & > img {
+          height: 100%;
+        }
+      }
+    }
+    & .page__header {
+      display: flex;
+      flex-direction: column;
+      &__title {
+      
+      }
+      &__subtitle {
+        margin-top: 1rem;
+      }
+      &__location {
+        margin-top: .5px;
+      }
+    }
+    &__info {
+      padding: 0 2rem;
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+      background-color: rgba($color-white, 0.9);
+      // margin-top: 3rem;
+      display: flex;
+      gap: 3rem;
+      &__header {
+        &__p {
+          text-align: justify;
+          font-size: .9rem;
+          margin-top: 2rem;
+          width: 100%;
+          display: inline-block;
+        }
+      }
+      &__map {
+        border-radius: .5rem;
+        border-bottom-right-radius: 2rem;
+        overflow: hidden;
+        flex: 0 0 400px;
+        width: 400px;
+        height: 300px;
+        background-color: $color-black-light;
+      }
+    }
+  }
+  .infofetch {
+    display: flex;
+    align-items: stretch;
+    background-color: rgba($color-black, 0.9);
+  }
+  .road {
+    margin: 2rem;
+    margin-right: 0;
+    width: 15%;
+    background-color: $color-white;
+    padding: 1rem;
+    border-radius: .5rem;
+    box-shadow: 0 2px 15px rgba($color-black-light, 0.1);
+  }
+  .weather {
+    margin: 2rem;
+    background-color: $color-white;
+    display: inline-flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: .5rem;
+    width: 180px;
+    transition: width 600ms ease-in-out;
+    overflow: hidden;
+    box-shadow: 0 2px 15px rgba($color-black-light, 0.1);
+    &.expanded {
+      width: 570px;
+    }
+    & > h2 {
+      margin-bottom: 1rem;
+      display: inline-block;
+      font-size: 1.2rem;
+    }
+    .gunler {
+      position: relative;
+      display: flex;
+      gap: 3rem;
+      padding: 0 1rem;
+      .expander {
+        background-color: transparent;
+        border: none;
+        outline: none;
+        font-size: 3rem;
+        position: absolute;
+        right: -1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: rgba($color-black-light, 0.1);
+        cursor: pointer;
+      }
+      & img {
+        width: 86px;
+      }
+      #gun1 .min, #gun1 .max {
+        font-size: 0.8rem;
+      } 
+      .hava {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex: 0 0 max-content;
+        h3 {
+          text-align: center;
+        }
+        .temp {
+          background-color: $color-white;
+          display: inline-block;
+          padding: .5rem 0;
+          text-align: center;
+        }
+      }
+    }
+    
+  }
+  
+  @media only screen and (max-width: 950px) {
+    .camp {
+      &__info {
+        flex-direction: column;
+      }
+    }
+    #map {
+      width: 100%;
+    }
+  }
+
+
+@media only screen and (max-width: 650px) {
+  .camp {
+    &__header {
+      padding: 2rem 1rem;
+      & .logo {
+        position: absolute;
+        left: 1rem;
+        top: 1.5rem;
+        
+        height: 30px;
+        & > img {
+          height: 100%;
+        }
+      }
+    }
+    & .page__header {
+      &__title {
+        margin-top: .1rem;
+      }
+      &__subtitle {
+        margin-top: .1rem;
+      }
+      
+    }
+    &__info {
+      flex-direction: column;
+    }
+  }
+  .infofetch {
+    flex-direction: column;
+    gap: 0;
+  }
+  .road {
+    align-self: stretch;
+    width: auto;
+    transform: scale(.7);
+  }
+  .weather {
+    margin-top: 0;
+    transform: scale(.7);
+    justify-self: flex-start;
+    align-self: center;
+  }
+}

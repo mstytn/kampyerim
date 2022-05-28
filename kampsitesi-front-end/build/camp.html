@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/camp.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
+  <link rel="shortcut icon" href="imgs/favicon.png" type="image/x-png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.js"></script>
+  <title>Kampi</title>
+</head>
+<body>
+
+    <div class="apppage">
+    <div class="camp">
+      <div class="camp__header">
+        <div class="logo">
+          <img src="imgs/logotype.svg" alt="logo">
+        </div>
+        <div class="page__header">
+          <h1 class="page__header__title"></h1>
+          <p class="page__header__subtitle"></p>
+          <p class="page__header__location"><i class="bi bi-geo-alt-fill"></i> <span></span></p>
+        </div>
+      </div>
+      <div class="camp__info">
+        
+        <div class="camp__info__map" id="map">
+        </div>
+
+        <div class="camp__info__header">
+          <h2 class="camp__info__header__h"></h2>
+          <p class="camp__info__header__p"></p>
+        </div>
+      </div>
+
+      <div class="infofetch">
+
+        <div class="road">
+          <i class="bi bi-signpost"></i>
+        </div>
+
+        <div class="weather">
+          <h2>Hava Durumu</h2>
+          <div class="gunler">
+            <button class="expander"><i class="bi bi-chevron-compact-right"></i></button>
+            <div class="hava" id="gun1">
+              <h3>Bugün</h3>
+              <div class="temp">
+                <img src="" alt="hava">
+                <div class="temp__p">
+                  <span class="min">12</span> / <span class="now">32</span> / <span class="max">24</span> &deg;C
+                </div>
+              </div>
+            </div>
+            <div class="hava" id="gun2">
+              <h3>Bugün</h3>
+              <div class="temp">
+                <img src="" alt="hava">
+                <div class="temp__p">
+                  <span class="min">12</span> / <span class="max">24</span> &deg;C
+                </div>
+              </div>
+            </div>
+            <div class="hava" id="gun3">
+              <h3>Bugün</h3>
+              <div class="temp">
+                <img src="" alt="hava">
+                <div class="temp__p">
+                  <span class="min">12</span> / <span class="max">24</span> &deg;C
+                </div>
+              </div>
+            </div>
+            <div class="hava" id="gun4">
+              <h3>Bugün</h3>
+              <div class="temp">
+                <img src="" alt="hava">
+                <div class="temp__p">
+                  <span class="min">12</span> / <span class="max">24</span> &deg;C
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="preloader">
+    <img src="imgs/loader.gif" alt="preloader">
+    <p class="preload-message">Yükleniyor</p>
+  </aside>
+  <script src="camp.js"></script>
+</body>
+</html>

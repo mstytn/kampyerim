@@ -1,0 +1,343 @@
+@import url("https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@400;500;600;700;800&family=Abril+Fatface&family=Alfa+Slab+One&family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bebas+Neue&family=Bitter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;0,6..96,800;0,6..96,900;1,6..96,400;1,6..96,500;1,6..96,600;1,6..96,700;1,6..96,800;1,6..96,900&family=Bree+Serif&family=Caladea:ital,wght@0,400;0,700;1,400;1,700&family=Cinzel+Decorative:wght@400;700&family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Orelega+One&family=Oswald:wght@200;300;400;500;600;700&family=Oxygen:wght@300;400;700&family=Pacifico&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300;400;500;600;700&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Sora:wght@100;200;300;400;500;600;700;800&family=Staatliches&family=Water+Brush&family=Work+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+:root {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  font-family: "Poppins", sans-serif;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+     -moz-box-orient: vertical;
+     -moz-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+     -moz-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+     -moz-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  z-index: -1;
+}
+.preloader .preload-message {
+  margin-top: -5rem;
+}
+
+.apppage {
+  display: none;
+}
+.apppage.visible {
+  display: block;
+}
+
+.camp__header {
+  background-color: white;
+  padding: 4rem 2rem;
+  position: relative;
+}
+.camp__header .logo {
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+     -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+       -o-transform: translateY(-50%);
+          transform: translateY(-50%);
+  height: 50px;
+}
+.camp__header .logo > img {
+  height: 100%;
+}
+.camp .page__header {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+     -moz-box-orient: vertical;
+     -moz-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.camp .page__header__subtitle {
+  margin-top: 1rem;
+}
+.camp .page__header__location {
+  margin-top: 0.5px;
+}
+.camp__info {
+  padding: 0 2rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 3rem;
+}
+.camp__info__header__p {
+  text-align: justify;
+  font-size: 0.9rem;
+  margin-top: 2rem;
+  width: 100%;
+  display: inline-block;
+}
+.camp__info__map {
+  border-radius: 0.5rem;
+  border-bottom-right-radius: 2rem;
+  overflow: hidden;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 400px;
+     -moz-box-flex: 0;
+      -ms-flex: 0 0 400px;
+          flex: 0 0 400px;
+  width: 400px;
+  height: 300px;
+  background-color: #323232;
+}
+
+.infofetch {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+  -webkit-align-items: stretch;
+     -moz-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.road {
+  margin: 2rem;
+  margin-right: 0;
+  width: 15%;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  -webkit-box-shadow: 0 2px 15px rgba(50, 50, 50, 0.1);
+          box-shadow: 0 2px 15px rgba(50, 50, 50, 0.1);
+}
+
+.weather {
+  margin: 2rem;
+  background-color: white;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -moz-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+     -moz-box-orient: vertical;
+     -moz-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  width: 180px;
+  -webkit-transition: width 600ms ease-in-out;
+  -o-transition: width 600ms ease-in-out;
+  -moz-transition: width 600ms ease-in-out;
+  transition: width 600ms ease-in-out;
+  overflow: hidden;
+  -webkit-box-shadow: 0 2px 15px rgba(50, 50, 50, 0.1);
+          box-shadow: 0 2px 15px rgba(50, 50, 50, 0.1);
+}
+.weather.expanded {
+  width: 570px;
+}
+.weather > h2 {
+  margin-bottom: 1rem;
+  display: inline-block;
+  font-size: 1.2rem;
+}
+.weather .gunler {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 3rem;
+  padding: 0 1rem;
+}
+.weather .gunler .expander {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 3rem;
+  position: absolute;
+  right: -1rem;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+     -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+       -o-transform: translateY(-50%);
+          transform: translateY(-50%);
+  color: rgba(50, 50, 50, 0.1);
+  cursor: pointer;
+}
+.weather .gunler img {
+  width: 86px;
+}
+.weather .gunler #gun1 .min, .weather .gunler #gun1 .max {
+  font-size: 0.8rem;
+}
+.weather .gunler .hava {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+     -moz-box-orient: vertical;
+     -moz-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+     -moz-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+     -moz-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: center;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 max-content;
+     -moz-box-flex: 0;
+      -ms-flex: 0 0 max-content;
+          flex: 0 0 max-content;
+}
+.weather .gunler .hava h3 {
+  text-align: center;
+}
+.weather .gunler .hava .temp {
+  background-color: white;
+  display: inline-block;
+  padding: 0.5rem 0;
+  text-align: center;
+}
+
+@media only screen and (max-width: 950px) {
+  .camp__info {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+       -moz-box-orient: vertical;
+       -moz-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+
+  #map {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 650px) {
+  .camp__header {
+    padding: 2rem 1rem;
+  }
+  .camp__header .logo {
+    position: absolute;
+    left: 1rem;
+    top: 1.5rem;
+    height: 30px;
+  }
+  .camp__header .logo > img {
+    height: 100%;
+  }
+  .camp .page__header__title {
+    margin-top: 0.1rem;
+  }
+  .camp .page__header__subtitle {
+    margin-top: 0.1rem;
+  }
+  .camp__info {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+       -moz-box-orient: vertical;
+       -moz-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+
+  .infofetch {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+       -moz-box-orient: vertical;
+       -moz-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    gap: 0;
+  }
+
+  .road {
+    -webkit-align-self: stretch;
+        -ms-flex-item-align: stretch;
+            align-self: stretch;
+    width: auto;
+    -webkit-transform: scale(0.7);
+       -moz-transform: scale(0.7);
+        -ms-transform: scale(0.7);
+         -o-transform: scale(0.7);
+            transform: scale(0.7);
+  }
+
+  .weather {
+    margin-top: 0;
+    -webkit-transform: scale(0.7);
+       -moz-transform: scale(0.7);
+        -ms-transform: scale(0.7);
+         -o-transform: scale(0.7);
+            transform: scale(0.7);
+    justify-self: flex-start;
+    -webkit-align-self: center;
+        -ms-flex-item-align: center;
+            align-self: center;
+  }
+}

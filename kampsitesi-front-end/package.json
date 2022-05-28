@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "copyhtml": "cp src/*.html build/",
     "compilejs": "node_modules\\.bin\\babel src/app.js -d build/",
-    "watch": "nodemon --watch src/*.* -x \"npm run copyhtml & npm run compilejs\""
+    "compilecamp": "node_modules\\.bin\\babel src/camp.js -d build/",
+    "watch": "nodemon --watch src/*.* -x \"npm run copyhtml & npm run compilejs & npm run compilecamp\""
   },
   "keywords": [],
   "author": "Mustafa Yatağan",
