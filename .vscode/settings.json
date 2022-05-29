@@ -7,13 +7,6 @@
       "savePath": "/kampsitesi-front-end/build/css",
       "savePathSegmentKeys": null,
       "savePathReplaceSegmentsWith": null
-    },
-    {
-      "format": "compressed",
-      "extensionName": ".min.css",
-      "savePath": "/kampsitesi-front-end/build/css",
-      "savePathSegmentKeys": null,
-      "savePathReplaceSegmentsWith": null
     }
   ],
   "jshint.enable": false

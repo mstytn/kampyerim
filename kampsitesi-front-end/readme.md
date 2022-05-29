@@ -1,6 +1,6 @@
 # Kampi Web Uygulaması Front-End
 
-[Kampyerim Okubeni](../readme.md) > [Back-End Okubemi](../kampsitesi-nack-end/readme.md) | Front-End Okubeni
+[Kamp Okubeni](../readme.md) > [Back-End Okubemi](../kampsitesi-nack-end/readme.md) | Front-End Okubeni
 
 <img src="../kampsitesi-front-end/build/imgs/logotype.svg" height="75">
 
@@ -10,8 +10,11 @@ Bu Front-End projesi İsmek Front-End Developer kursu için bitirme projesi olar
 
 - [Site Hakkında](#sitehakkinda)
   - [Sitenin Görünümü](#sitenin-görünümü)
-  - [Menü Tasarımı](#menü-tasarımı)
-  - [Kart Filtreleme](#filtreleme)
+    - [Menü Tasarımı](#menü-tasarımı)
+    - [Kart Filtreleme](#filtreleme)
+  - [Kamp Detay Sayfası](#kamp-detay-sayfası)
+    - [Hava Durumu ve Yol Bilisi](#hava-durumu-yol-bilgisi)
+    - [Foto Carousel](#fotoğraf-carousel)
 - [Kullanılan Paketler](#kullanılan-paketler)
   - [@babel](#babel)
   - [Live Sass Compiler](#live-sass-compiler)
@@ -49,6 +52,22 @@ Menü'yü en başa eklemektense sürekli sayfada duracak bir hamburger menü ola
 Daha önce yatığım front-end filtrelemesi yerine filtreleme işini back-end'e bıraktım. Şu an sayfadaki kriterlerden ziyade, headerlara eklenecek herhangi bir filtrelemeye yanıt verecek şekilde tasarladım. Fakat bu işlevi back-end'de iptal ettim. Amacım bütün veri tabanına bir şekilde sayfa dışından ulaşılmasını engellemek. Back-end hiçbir koşulda bütün veri tabanını front-end'de göndermeyecek şekilde tasarlandı. Lâkin bütün koşulları test edemediğimden açık kalmış olabilir. Back-End yazımına fazla zaman ayırmak istemedim. Bu yüzden bu kısım çok da geçerli olmayabilir. Kod gözden geçirme ile çözülebilir.
 
 ![menu](./readmefiles/v_filter.gif)
+
+## Kamp Detay Sayfası
+
+### Hava Durumu Yol Bilgisi
+
+Hava durumu verileri accuweather'dan sağlanıyor. Ücretsiz API kullandığından, ileri tarihli havadurumu'nu posta kodundan sorguluyor. Ve bazen posta kodlarını bulamıyor. Ücretli versiyona geçilebilir ya da başka bir API kullanılabilir.
+
+Yol bilgisi mapbox'tan geliyor. Ana sayfadaki mongo geolocation bilgisinden biraz farklı. Buradaki gösterilen mesafe en kısa araç yolu mesafesi. Ana sayfadaki yakınlık ölçümü 2 boyutlu küre mesafe ölçümü ile yapılıyor.
+
+![havadurumu](./readmefiles/v_map_weather.gif)
+
+### Fotoğraf Carousel
+
+Eğer kamp fotoğraf içeriyorsa, imajların seçilebileceği bir karusel yerleştiriyor. Ve bir imaj işaretlendiğinde (click ya da tap) carousel tam sayfa olarak açılıyor.
+
+![karusel](./readmefiles/v_carousel.gif)
 
 ## Kullanılan Paketler
 

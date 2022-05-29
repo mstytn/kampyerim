@@ -1,5 +1,3 @@
-// jshint ignore: start
-
 require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
@@ -10,19 +8,8 @@ const Camp = require('./models/campmodel')
 const CampResponse = require('./models/response')
 const Op = require('./models/openweather')
 const op = new Op()
-// const { getDirections } = require('./models/mapbox')
-// const qOptions = require('./models/querylimiter')
+const { getDirections } = require('./models/mapbox')
 
-// const fs = require('fs')
-
-
-
-// op.getDailyWeather(48900).then(data => {
-//   fs.writeFileSync('./forecastdata.json', JSON.stringify(data))
-// })
-
-// op.parseWeatherData(require('./forecastdata.json'))
-// `mongodb://localhost:27017/${process.env.DB}`
 const mongostr = process.env.MONGO_STR || process.env.DB
 
 mongoose.connect(mongostr)
@@ -41,16 +28,11 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
 app.get('/', (req, res) => {
-  // BUG: REPLACE - ROMVE - DO SOMETHING
-  // Camp.find({}).then(data => {res.json(new CampResponse(true, data.length, data))}).catch(e => {res.status(500).json(new CampResponse(false, 0, e.message))})
-  // const data = require('./mongodmp.json')
-  // Camp.insertMany(data).then(console.log).catch(console.error)
   res.send('Hello')
 })
 
 app.post('/weatherdata', async (req,res) => {
   const { coordinates, postalcode } = req.body
-  console.log(coordinates.reverse(), postalcode)
   const wData = await op.getWeaterData(coordinates.reverse(), postalcode)
   res.json(new CampResponse(true, 1, wData))
 })
@@ -79,7 +61,6 @@ app.get('/camps/cluster', async (req, res) => {
 })
 
 app.get('/camps/camp/:id', async (req, res) => {
-  // BUG
   try {
     const result = await Camp.findById(req.params.id)
     return res.json(new CampResponse(true, 1, result))
@@ -101,6 +82,12 @@ app.get('/provinances', async (_req, res) => {
 app.post('/geoloc', async (req, res) => {
   const result = await CampResponse.getGeoObj(req.body.loc)
   res.json(new CampResponse(true, result.length, result))
+})
+
+app.post('/campdistance', async (req, res) => {
+  const { location, camplocation } = req.body
+  const distance = await getDirections( location, camplocation )
+  res.json(new CampResponse(true, 1, distance))
 })
 
 app.get('/mapboxtoken/:token', (req, res) => {

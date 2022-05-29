@@ -110,6 +110,17 @@ class Page {
     this.weatherExpandButtonIcon = document.querySelector('.expander > i.bi')
     this.weahterInfo = document.querySelector('.weather')
     this.weatherInfoExpanded = false
+    this.carousel = document.querySelector('.images__carousel'),
+    this.fullcarousel = { 
+      element: document.querySelector('.carousel'),
+      isVisible: false,
+      closeButton: document.querySelector('.carousel > button'),
+      imageSelectorElement: document.querySelector('.carousel .img-selector'),
+      carouselImages: document.querySelectorAll('.carousel > .img-selector > .img'),
+      activeIndex: -1,
+      mainImageElement: document.querySelector('.carousel .disimage > img'),
+      carouselImageLinks: []
+    }
     this.weatherToday = {
       day: document.querySelector('#gun1 > h3'),
       icon: document.querySelector('#gun1 img'),
@@ -125,6 +136,7 @@ class Page {
       const max = document.querySelector(`#gun${i} .max`)
       this.weatherNext.push({day, icon, min, max})
     }
+    this.distance = document.querySelector('.road span')
     this.#hook()
   }
 
@@ -138,6 +150,7 @@ class Page {
   }
 
   async #updatePage(data) {
+    document.title = 'Kampi | ' + data.name
     const bgstyle = document.querySelector('body').style
     bgstyle.backgroundImage = `url(${data.images[0]})`
     bgstyle.backgroundRepeat = 'no-repeat'
@@ -151,8 +164,90 @@ class Page {
     this.campInfoParagraph.innerText = data.description
   }
 
+  updateDistance(distanceData) {
+    if (distanceData)
+      this.distance.innerText = distanceData + ' km'
+  }
+
   #hook() {
     this.weatherExpandButton.addEventListener('click', this.#weatherExpand)
+    this.carousel.addEventListener('click', this.#carouselClick)
+    this.fullcarousel.closeButton.addEventListener('click', () => {
+      this.#toggleFullCarousel()
+    })
+  }
+
+  #carouselClick = (event) => {
+    const imgIndex = event.target.getAttribute('data-index')
+    console.log(imgIndex)
+    this.#toggleFullCarousel(imgIndex, ["1", "2"])
+  }
+
+  #updateFullCarouselElements() {
+    this.fullcarousel.element = document.querySelector('.carousel')
+    this.fullcarousel.imageSelectorElement = document.querySelector('.carousel .img-selector')
+    this.fullcarousel.carouselImages = document.querySelectorAll('.carousel > .img-selector > .img')
+    this.fullcarousel.carouselImages.forEach((sel, i) => {
+      sel.addEventListener('click', (event) => {
+        this.fullcarousel.activeIndex = Number(event.target.parentElement.getAttribute('data-index'))
+        this.#fullcarouselSelectorActivate()
+      })
+    })
+  }
+
+  #createFullScreenCarousel() {
+    this.fullcarousel.carouselImageLinks.forEach((il, i) => {
+      this.fullcarousel.imageSelectorElement.insertAdjacentHTML('beforeend', `
+      <div class="img" data-index="${i}">
+      <img src="${il}" alt="${il}">
+    </div>
+      `)
+    })
+    this.#updateFullCarouselElements()
+  }
+
+  createCraousel(imageLinks) {
+    this.fullcarousel.carouselImageLinks = imageLinks
+    this.fullcarousel.carouselImageLinks.forEach((il, i) => {
+      this.carousel.insertAdjacentHTML('beforeend', `
+        <div class="img" data-index="${i}">
+          <img src="${il}" alt="${il}">
+        </div>
+      `)
+    });
+    this.#createFullScreenCarousel()
+  }
+
+  #toggleFullCarousel = (index = 0) => {
+
+    // else {
+    //   this.fullcarousel.activeIndex = index
+    //   this.#fullcarouselSelectorActivate()
+    // }
+    this.fullcarousel.activeIndex = index
+    this.#fullcarouselSelectorActivate()
+    if (this.fullcarousel.isVisible) {
+      this.fullcarousel.element.classList.remove('show')
+      document.querySelector('body').style.overflow = 'auto'
+      this.fullcarousel.isVisible = false
+    } else {
+      this.fullcarousel.element.classList.add('show')
+      document.querySelector('body').style.overflow = 'hidden'
+      this.fullcarousel.isVisible = true
+    }
+  }
+
+  #fullcarouselSelectorActivate() {
+    if (this.fullcarousel.carouselImageLinks.length < 2) {
+      this.fullcarousel.imageSelectorElement.style.display = 'none'
+      this.fullcarousel.mainImageElement.src = this.fullcarousel.carouselImages[this.fullcarousel.activeIndex].firstElementChild.src
+      return
+    } else {
+      this.fullcarousel.imageSelectorElement.style.display = 'flex'
+      this.fullcarousel.carouselImages.forEach(i => {i.classList.remove('active')})
+      this.fullcarousel.carouselImages[this.fullcarousel.activeIndex].classList.add('active')
+      this.fullcarousel.mainImageElement.src = this.fullcarousel.carouselImages[this.fullcarousel.activeIndex].firstElementChild.src
+    }
   }
 
   #weatherExpand = (event) => {
@@ -181,9 +276,10 @@ class Page {
     this.weatherToday.min.innerText = Math.round(temp_min)
     this.weatherToday.max.innerText = Math.round(temp_max)
     this.weatherToday.now.innerText = Math.round(temp)
-    console.log(wData.data.dailyWeather)
-    if (!wData.data.dailyWeather)
+    if (!wData.data.dailyWeather) {
       this.weatherExpandButton.style.display = 'none'
+      return
+    }
     wData.data.dailyWeather.forEach((data, index) => {
       const weekdadays = [
         "Pzr",
@@ -219,7 +315,7 @@ class MyMapbox {
   createMap = (location) => {
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/light-v10',
+      style: 'mapbox://styles/mapbox/dark-v10',
       center: location,
       zoom: 10
     })
@@ -257,154 +353,52 @@ class Weather {
   }
 }
 
+class Distancer {
+  constructor() {
+    this.locdata = undefined
+    this.camplocation = undefined
+    this.distance = undefined
+  }
+
+  updateLocationData(loc, cloc) {
+    this.locdata = loc
+    this.camplocation = cloc
+  }
+
+  async getDistance() {
+    
+    if (!this.locdata || !this.camplocation)
+      return {data: false}
+    const requestBody = {location: this.locdata, camplocation: this.camplocation}
+    const data = await kampi.fetchPost('/campdistance', requestBody)
+    return data
+  }
+}
+
 const page = new Page()
-const kampi = new Kampi()
+const kampi = new Kampi('https://kampisitesi.herokuapp.com')
 const uLoc = new UserLocation()
 const myMapBox = new MyMapbox()
 const weather = new Weather()
+const dist = new Distancer()
 
 async function main() {
   try {
-  await uLoc.requestLocation()
+    await uLoc.requestLocation()
   } catch {}
   const campInfo = await kampi.getCampInfo()
   await page.showAppPage(campInfo)
+  
+  dist.updateLocationData(uLoc.point, campInfo.location.coordinates)
   page.removePreloader()
-  // mapboxgl.accessToken = (await myMapBox.getToken()).data
-  // myMapBox.createMap(campInfo.location.coordinates)
+  mapboxgl.accessToken = (await myMapBox.getToken()).data
+  myMapBox.createMap(campInfo.location.coordinates)
   weather.updateCampInfo(campInfo.location.coordinates, campInfo.postalcode)
-  // const wData = await weather.getTheWeather()
-  // console.log(wData)
-  const wData = {
-    "coordinates": [
-        28.9888859,
-        41.1836765
-    ],
-    "zipcode": "34473",
-    "expiration": 1653778478924,
-    "data": {
-        "weather": {
-            "coord": {
-                "lon": 28.9889,
-                "lat": 41.1837
-            },
-            "weather": [
-                {
-                    "id": 804,
-                    "main": "Clouds",
-                    "description": "kapalı",
-                    "icon": "04n"
-                }
-            ],
-            "base": "stations",
-            "main": {
-                "temp": 22.5,
-                "feels_like": 22.58,
-                "temp_min": 18.53,
-                "temp_max": 25.29,
-                "pressure": 1011,
-                "humidity": 68,
-                "sea_level": 1011,
-                "grnd_level": 994
-            },
-            "visibility": 10000,
-            "wind": {
-                "speed": 0.53,
-                "deg": 97,
-                "gust": 0.88
-            },
-            "clouds": {
-                "all": 91
-            },
-            "dt": 1653767658,
-            "sys": {
-                "type": 1,
-                "id": 6970,
-                "country": "TR",
-                "sunrise": 1653705361,
-                "sunset": 1653758815
-            },
-            "timezone": 10800,
-            "id": 6940491,
-            "name": "Arıköy",
-            "cod": 200
-        },
-        "dailyWeather": [
-            {
-                "dt_txt": "2022-05-29 12:00:00",
-                "min_temp": 19,
-                "max_temp": 23,
-                "max_humidity": 83,
-                "wind": {
-                    "speed": 4.16,
-                    "deg": 36,
-                    "gust": 4.81
-                },
-                "clouds": {
-                    "all": 5
-                },
-                "weather": [
-                    {
-                        "id": 800,
-                        "main": "Clear",
-                        "description": "açık",
-                        "icon": "01d"
-                    }
-                ],
-                "wheather_icon": "http://openweathermap.org/img/wn/undefined@2x.png"
-            },
-            {
-                "dt_txt": "2022-05-30 12:00:00",
-                "min_temp": 19,
-                "max_temp": 26,
-                "max_humidity": 75,
-                "wind": {
-                    "speed": 5.3,
-                    "deg": 263,
-                    "gust": 8.36
-                },
-                "clouds": {
-                    "all": 0
-                },
-                "weather": [
-                    {
-                        "id": 800,
-                        "main": "Clear",
-                        "description": "açık",
-                        "icon": "01d"
-                    }
-                ],
-                "wheather_icon": "http://openweathermap.org/img/wn/undefined@2x.png"
-            },
-            {
-                "dt_txt": "2022-05-31 12:00:00",
-                "min_temp": 18,
-                "max_temp": 23,
-                "max_humidity": 85,
-                "wind": {
-                    "speed": 3.84,
-                    "deg": 13,
-                    "gust": 4.03
-                },
-                "clouds": {
-                    "all": 40
-                },
-                "weather": [
-                    {
-                        "id": 802,
-                        "main": "Clouds",
-                        "description": "parçalı az bulutlu",
-                        "icon": "03d"
-                    }
-                ],
-                "wheather_icon": "http://openweathermap.org/img/wn/undefined@2x.png"
-            }
-        ]
-    }
-  }
-
-
+  const wData = await weather.getTheWeather()
+  const distance = await dist.getDistance()
   page.updateWeather(wData)
+  page.updateDistance(distance.data)
+  page.createCraousel(campInfo.images)
 }
 
 main()

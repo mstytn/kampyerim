@@ -22,7 +22,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-var backendOrigin = 'http://localhost:3000';
+var backendOrigin = 'https://kampisitesi.herokuapp.com';
 var myHeaders = new Headers();
 myHeaders.append('Accept', '*/*');
 myHeaders.append('Content-Type', 'application/json');
@@ -232,7 +232,7 @@ var FeaturedCaps = /*#__PURE__*/function () {
               case 2:
                 data = _context4.sent;
                 data.forEach(function (d, i) {
-                  if (i < 4) _this2.fCamps += "\n          <div class=\"featured-camp\" data-link=\"".concat(d._id, "\">\n            <div class=\"featured-camp__img\">\n              <img src=\"").concat(d.images[0], "\" alt=\"").concat(d.name.toLowerCase(), "\">\n              </div>\n            <img class=\"dummy\" src=\"imgs/loader.gif\" alt=\"dummy\">\n            <div class=\"featured-camp__info\">\n              <h3>").concat(d.name.toLowerCase(), "</h3>\n              <p><i class=\"bi bi-geo-alt-fill\"></i> ").concat(d.region, "</p>\n            </div>\n          </div>\n        ");
+                  if (i < 4) _this2.fCamps += "\n          <a href=\"camp.html?id=".concat(d._id, "\" class=\"featured-camp\" data-link=\"").concat(d._id, "\">\n            <div class=\"featured-camp__img\">\n              <img src=\"").concat(d.images[0], "\" alt=\"").concat(d.name.toLowerCase(), "\">\n              </div>\n            <img class=\"dummy\" src=\"imgs/loader.gif\" alt=\"dummy\">\n            <div class=\"featured-camp__info\">\n              <h3>").concat(d.name.toLowerCase(), "</h3>\n              <p><i class=\"bi bi-geo-alt-fill\"></i> ").concat(d.region, "</p>\n            </div>\n          </a>\n        ");
                 });
                 return _context4.abrupt("return", this);
 
@@ -315,28 +315,6 @@ var FeaturedCaps = /*#__PURE__*/function () {
             });
           }
         });
-        this.featuredList.addEventListener('click', /*#__PURE__*/function () {
-          var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(e) {
-            var id;
-            return _regeneratorRuntime().wrap(function _callee6$(_context6) {
-              while (1) {
-                switch (_context6.prev = _context6.next) {
-                  case 0:
-                    id = e.target.getAttribute('data-link');
-                    document.location.href = '/camp.html?id=' + id;
-
-                  case 2:
-                  case "end":
-                    return _context6.stop();
-                }
-              }
-            }, _callee6);
-          }));
-
-          return function (_x2) {
-            return _ref2.apply(this, arguments);
-          };
-        }());
       }
     }
   }]);
@@ -349,11 +327,11 @@ function showMap() {
 }
 
 function _showMap() {
-  _showMap = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
+  _showMap = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
     var myHeaders, requestOptions, tokenResponse, mapboxToken, map, response, cluster;
-    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
       while (1) {
-        switch (_context10.prev = _context10.next) {
+        switch (_context9.prev = _context9.next) {
           case 0:
             myHeaders = new Headers();
             myHeaders.append('Accept', '*/*');
@@ -364,28 +342,28 @@ function _showMap() {
               headers: myHeaders,
               redirect: 'follow'
             };
-            _context10.next = 7;
+            _context9.next = 7;
             return fetch(backendOrigin + '/mapboxtoken/e72587d1b2ef43e9b6ec56f693612826', requestOptions);
 
           case 7:
-            tokenResponse = _context10.sent;
-            _context10.next = 10;
+            tokenResponse = _context9.sent;
+            _context9.next = 10;
             return tokenResponse.json();
 
           case 10:
-            mapboxToken = _context10.sent;
+            mapboxToken = _context9.sent;
             mapboxgl.accessToken = mapboxToken.data;
-            _context10.prev = 12;
-            _context10.next = 15;
+            _context9.prev = 12;
+            _context9.next = 15;
             return uloc.requestLocation();
 
           case 15:
-            _context10.next = 19;
+            _context9.next = 19;
             break;
 
           case 17:
-            _context10.prev = 17;
-            _context10.t0 = _context10["catch"](12);
+            _context9.prev = 17;
+            _context9.t0 = _context9["catch"](12);
 
           case 19:
             map = new mapboxgl.Map({
@@ -394,20 +372,20 @@ function _showMap() {
               center: uloc.point,
               zoom: 4
             });
-            _context10.next = 22;
+            _context9.next = 22;
             return fetch(backendOrigin + '/camps/cluster', requestOptions);
 
           case 22:
-            response = _context10.sent;
-            _context10.next = 25;
+            response = _context9.sent;
+            _context9.next = 25;
             return response.json();
 
           case 25:
-            cluster = _context10.sent;
-            map.on('load', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
-              return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+            cluster = _context9.sent;
+            map.on('load', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7() {
+              return _regeneratorRuntime().wrap(function _callee7$(_context7) {
                 while (1) {
-                  switch (_context8.prev = _context8.next) {
+                  switch (_context7.prev = _context7.next) {
                     case 0:
                       map.addSource('kampyerleri', {
                         type: 'geojson',
@@ -458,10 +436,10 @@ function _showMap() {
 
                     case 5:
                     case "end":
-                      return _context8.stop();
+                      return _context7.stop();
                   }
                 }
-              }, _callee8);
+              }, _callee7);
             }))); // inspect a cluster on click
 
             map.on('click', 'clusters', function (e) {
@@ -482,25 +460,25 @@ function _showMap() {
             // description HTML from its properties.
 
             map.on('click', 'unclustered-point', /*#__PURE__*/function () {
-              var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(e) {
+              var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(e) {
                 var coordinates, id, res, data, _data$data, name, _id, place, region, images;
 
-                return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+                return _regeneratorRuntime().wrap(function _callee8$(_context8) {
                   while (1) {
-                    switch (_context9.prev = _context9.next) {
+                    switch (_context8.prev = _context8.next) {
                       case 0:
                         coordinates = e.features[0].geometry.coordinates.slice();
                         id = e.features[0].properties._id;
-                        _context9.next = 4;
+                        _context8.next = 4;
                         return fetch(backendOrigin + '/camps/camp/' + id);
 
                       case 4:
-                        res = _context9.sent;
-                        _context9.next = 7;
+                        res = _context8.sent;
+                        _context8.next = 7;
                         return res.json();
 
                       case 7:
-                        data = _context9.sent;
+                        data = _context8.sent;
                         _data$data = data.data, name = _data$data.name, _id = _data$data._id, place = _data$data.place, region = _data$data.region, images = _data$data.images; // Ensure that if the map is zoomed out such that
                         // multiple copies of the feature are visible, the
                         // popup appears over the copy being pointed to.
@@ -513,14 +491,14 @@ function _showMap() {
 
                       case 11:
                       case "end":
-                        return _context9.stop();
+                        return _context8.stop();
                     }
                   }
-                }, _callee9);
+                }, _callee8);
               }));
 
-              return function (_x9) {
-                return _ref5.apply(this, arguments);
+              return function (_x8) {
+                return _ref4.apply(this, arguments);
               };
             }());
             map.on('mouseenter', 'clusters', function () {
@@ -529,14 +507,14 @@ function _showMap() {
             map.on('mouseleave', 'clusters', function () {
               map.getCanvas().style.cursor = '';
             });
-            return _context10.abrupt("return", map);
+            return _context9.abrupt("return", map);
 
           case 32:
           case "end":
-            return _context10.stop();
+            return _context9.stop();
         }
       }
-    }, _callee10, null, [[12, 17]]);
+    }, _callee9, null, [[12, 17]]);
   }));
   return _showMap.apply(this, arguments);
 }
@@ -623,28 +601,29 @@ function _hook2() {
 
 var menu = new Menugator('.navholder', 'shownav');
 var uloc = new UserLocation();
-var map; // TODO: THIS IS THE MAP
-// showMap().then(mp => {map = mp})
-
+var map;
+showMap().then(function (mp) {
+  map = mp;
+});
 var fc = new FeaturedCaps('.featured-campgrid'); //SECTION: Unintentionally created entry point for appjs
 
 fc.featuredCampCreator().then( /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(o) {
-    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(o) {
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) {
-        switch (_context7.prev = _context7.next) {
+        switch (_context6.prev = _context6.next) {
           case 0:
-            _context7.prev = 0;
-            _context7.next = 3;
+            _context6.prev = 0;
+            _context6.next = 3;
             return uloc.requestLocation();
 
           case 3:
-            _context7.next = 7;
+            _context6.next = 7;
             break;
 
           case 5:
-            _context7.prev = 5;
-            _context7.t0 = _context7["catch"](0);
+            _context6.prev = 5;
+            _context6.t0 = _context6["catch"](0);
 
           case 7:
             o.displayFeatured();
@@ -654,14 +633,14 @@ fc.featuredCampCreator().then( /*#__PURE__*/function () {
 
           case 11:
           case "end":
-            return _context7.stop();
+            return _context6.stop();
         }
       }
-    }, _callee7, null, [[0, 5]]);
+    }, _callee6, null, [[0, 5]]);
   }));
 
-  return function (_x3) {
-    return _ref3.apply(this, arguments);
+  return function (_x2) {
+    return _ref2.apply(this, arguments);
   };
 }());
 
@@ -692,27 +671,27 @@ function kamplist() {
 }
 
 function _kamplist() {
-  _kamplist = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
+  _kamplist = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10() {
     var nearme, nFilt, data;
-    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
       while (1) {
-        switch (_context11.prev = _context11.next) {
+        switch (_context10.prev = _context10.next) {
           case 0:
             if (!uloc.isPointGathered) {
-              _context11.next = 8;
+              _context10.next = 8;
               break;
             }
 
-            _context11.next = 3;
+            _context10.next = 3;
             return requestNearMe();
 
           case 3:
-            nearme = _context11.sent;
+            nearme = _context10.sent;
             nFilt = nearme.data.filter(function (_v, i) {
               return i < 9;
             });
             createKampList(nFilt, "Size en yak\u0131n ".concat(nFilt.length, " kamp alan\u0131 g\xF6r\xFCnt\xFCleniyor"));
-            _context11.next = 10;
+            _context10.next = 10;
             break;
 
           case 8:
@@ -721,10 +700,10 @@ function _kamplist() {
 
           case 10:
           case "end":
-            return _context11.stop();
+            return _context10.stop();
         }
       }
-    }, _callee11);
+    }, _callee10);
   }));
   return _kamplist.apply(this, arguments);
 }
@@ -748,11 +727,11 @@ function requestNearMe() {
 }
 
 function _requestNearMe() {
-  _requestNearMe = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12() {
+  _requestNearMe = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11() {
     var myHeaders, reqBody, requestOptions, response, data;
-    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
+    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
       while (1) {
-        switch (_context12.prev = _context12.next) {
+        switch (_context11.prev = _context11.next) {
           case 0:
             myHeaders = new Headers();
             myHeaders.append('Accept', '*/*');
@@ -769,24 +748,24 @@ function _requestNearMe() {
               redirect: 'follow',
               body: JSON.stringify(reqBody)
             };
-            _context12.next = 8;
+            _context11.next = 8;
             return fetch(backendOrigin + '/camps/nearme', requestOptions);
 
           case 8:
-            response = _context12.sent;
-            _context12.next = 11;
+            response = _context11.sent;
+            _context11.next = 11;
             return response.json();
 
           case 11:
-            data = _context12.sent;
-            return _context12.abrupt("return", data);
+            data = _context11.sent;
+            return _context11.abrupt("return", data);
 
           case 13:
           case "end":
-            return _context12.stop();
+            return _context11.stop();
         }
       }
-    }, _callee12);
+    }, _callee11);
   }));
   return _requestNearMe.apply(this, arguments);
 }
@@ -808,22 +787,22 @@ function addBolgeFilteringSelector() {
 }
 
 function _addBolgeFilteringSelector() {
-  _addBolgeFilteringSelector = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13() {
+  _addBolgeFilteringSelector = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12() {
     var response, data, bolgeElement, regionElement, placeElement;
-    return _regeneratorRuntime().wrap(function _callee13$(_context13) {
+    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
       while (1) {
-        switch (_context13.prev = _context13.next) {
+        switch (_context12.prev = _context12.next) {
           case 0:
-            _context13.next = 2;
+            _context12.next = 2;
             return fetch(backendOrigin + '/provinances', requestOptions);
 
           case 2:
-            response = _context13.sent;
-            _context13.next = 5;
+            response = _context12.sent;
+            _context12.next = 5;
             return response.json();
 
           case 5:
-            data = _context13.sent;
+            data = _context12.sent;
             bolgeElement = document.querySelector('#bolge');
             regionElement = document.querySelector('#il');
             placeElement = document.querySelector('#ilce');
@@ -844,10 +823,10 @@ function _addBolgeFilteringSelector() {
 
           case 15:
           case "end":
-            return _context13.stop();
+            return _context12.stop();
         }
       }
-    }, _callee13);
+    }, _callee12);
   }));
   return _addBolgeFilteringSelector.apply(this, arguments);
 }
@@ -872,26 +851,26 @@ function resetFilters() {
   kamplist();
 }
 
-function selectorUpdater(_x4) {
+function selectorUpdater(_x3) {
   return _selectorUpdater.apply(this, arguments);
 }
 
 function _selectorUpdater() {
-  _selectorUpdater = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(targetElement) {
+  _selectorUpdater = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(targetElement) {
     var provinanceElement, regionElement, placeElement, data, message;
-    return _regeneratorRuntime().wrap(function _callee14$(_context14) {
+    return _regeneratorRuntime().wrap(function _callee13$(_context13) {
       while (1) {
-        switch (_context14.prev = _context14.next) {
+        switch (_context13.prev = _context13.next) {
           case 0:
             provinanceElement = document.querySelector('#bolge');
             regionElement = document.querySelector('#il');
             placeElement = document.querySelector('#ilce');
             selectorDisabler();
-            _context14.next = 6;
+            _context13.next = 6;
             return filter(provinanceElement.value, regionElement.value, placeElement.value, targetElement);
 
           case 6:
-            data = _context14.sent;
+            data = _context13.sent;
             selectorEnabler();
 
             if (data) {
@@ -901,10 +880,10 @@ function _selectorUpdater() {
 
           case 9:
           case "end":
-            return _context14.stop();
+            return _context13.stop();
         }
       }
-    }, _callee14);
+    }, _callee13);
   }));
   return _selectorUpdater.apply(this, arguments);
 }
@@ -927,16 +906,16 @@ function selectorEnabler() {
   if (placeElement.options.length > 1) placeElement.disabled = false;
 }
 
-function filter(_x5, _x6, _x7, _x8) {
+function filter(_x4, _x5, _x6, _x7) {
   return _filter.apply(this, arguments);
 }
 
 function _filter() {
-  _filter = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15(provinance, region, place, targetElement) {
+  _filter = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(provinance, region, place, targetElement) {
     var provinanceElement, regionElement, placeElement, filterButton, filterButtonItself, selectMessage, myHeaders, reqBody, requestOptions, response, data, regions, regionsSelectorData, places, placesSelectoData;
-    return _regeneratorRuntime().wrap(function _callee15$(_context15) {
+    return _regeneratorRuntime().wrap(function _callee14$(_context14) {
       while (1) {
-        switch (_context15.prev = _context15.next) {
+        switch (_context14.prev = _context14.next) {
           case 0:
             provinanceElement = document.querySelector('#bolge');
             regionElement = document.querySelector('#il');
@@ -960,13 +939,13 @@ function _filter() {
             }
 
             if (!(provinance === '' && region === '' && place === '')) {
-              _context15.next = 12;
+              _context14.next = 12;
               break;
             }
 
             resetFilters();
             kamplist();
-            return _context15.abrupt("return");
+            return _context14.abrupt("return");
 
           case 12:
             myHeaders = new Headers();
@@ -984,25 +963,25 @@ function _filter() {
               redirect: 'follow',
               body: JSON.stringify(reqBody)
             };
-            _context15.next = 20;
+            _context14.next = 20;
             return fetch(backendOrigin + '/camps/filter', requestOptions);
 
           case 20:
-            response = _context15.sent;
-            _context15.next = 23;
+            response = _context14.sent;
+            _context14.next = 23;
             return response.json();
 
           case 23:
-            data = _context15.sent;
+            data = _context14.sent;
 
             if (data.success) {
-              _context15.next = 30;
+              _context14.next = 30;
               break;
             }
 
             resetFilters();
             kamplist();
-            return _context15.abrupt("return");
+            return _context14.abrupt("return");
 
           case 30:
             if (provinanceElement.selectedIndex > 0) {
@@ -1037,14 +1016,14 @@ function _filter() {
             }
 
           case 33:
-            return _context15.abrupt("return", data.data);
+            return _context14.abrupt("return", data.data);
 
           case 34:
           case "end":
-            return _context15.stop();
+            return _context14.stop();
         }
       }
-    }, _callee15);
+    }, _callee14);
   }));
   return _filter.apply(this, arguments);
 }

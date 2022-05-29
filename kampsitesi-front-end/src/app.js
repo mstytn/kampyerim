@@ -1,4 +1,4 @@
-const backendOrigin = 'http://localhost:3000'
+const backendOrigin = 'https://kampisitesi.herokuapp.com'
 const myHeaders = new Headers();
 myHeaders.append('Accept', '*/*');
 myHeaders.append('Content-Type', 'application/json')
@@ -81,7 +81,7 @@ class FeaturedCaps {
     data.forEach((d, i) => {
       if (i < 4)
         this.fCamps += `
-          <div class="featured-camp" data-link="${d._id}">
+          <a href="camp.html?id=${d._id}" class="featured-camp" data-link="${d._id}">
             <div class="featured-camp__img">
               <img src="${d.images[0]}" alt="${d.name.toLowerCase()}">
               </div>
@@ -90,7 +90,7 @@ class FeaturedCaps {
               <h3>${d.name.toLowerCase()}</h3>
               <p><i class="bi bi-geo-alt-fill"></i> ${d.region}</p>
             </div>
-          </div>
+          </a>
         `
     })
     return this
@@ -127,10 +127,6 @@ class FeaturedCaps {
             essential: true // this animation is considered essential with respect to prefers-reduced-motion
             });
         }
-      })
-      this.featuredList.addEventListener('click', async (e) => {
-        const id = e.target.getAttribute('data-link')
-        document.location.href = '/camp.html?id='+id
       })
     }
   }
@@ -370,8 +366,7 @@ const menu = new Menugator('.navholder', 'shownav')
 
 const uloc = new UserLocation()
 let map
-// TODO: THIS IS THE MAP
-// showMap().then(mp => {map = mp})
+showMap().then(mp => {map = mp})
 const fc = new FeaturedCaps('.featured-campgrid')
 
 //SECTION: Unintentionally created entry point for appjs

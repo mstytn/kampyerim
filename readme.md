@@ -2,8 +2,6 @@
 
 <img src="./kampsitesi-front-end/build/imgs/logotype.svg" height="75">
 
-!!!Geliştirme Aşamasında!!!
-
 İsmek Front-End Developer kursu için bitirme projesidir. Bu repo **Back-End** ve **Front-End** olmak üzere iki kısımdan oluşmaktadır.
 
 ## Site Amacı
@@ -17,6 +15,7 @@ Kamp Sitesi Türkiyede bulunan kamp yapılabilecek ücretli ya da ücretsiz kamp
     - [Back-End Okubeni](./kampsitesi-back-end/readme.md)
   - [Back-End](#back-end)
     - [Front-End Okubeni](./kampsitesi-front-end/readme.md)
+- [Yapılacaklar](#yapılacaklar)
 - [Kaynaklar](kaynaklar)
 
 ## Repo Yapısı
@@ -24,6 +23,8 @@ Kamp Sitesi Türkiyede bulunan kamp yapılabilecek ücretli ya da ücretsiz kamp
 ### Front-End
 
 Front-End kısmı ise Standart HTML - CSS - JS çalıştıracak şekilde planlandı. Kurs içeriği aslında bu kısımda bulunmaktadır. Back-End kısmı yalnızca Front-End'i desteklemek için yazıldı.
+
+Front-End için **mapbox** ve **bootstrap icons** dışında bir framework vs kullanılmadı. Front-end için yazılan CSS - HTML ve JS kodlarının hepsi tarafıma aittir.
 
 ### *Back-End
 
@@ -35,6 +36,15 @@ Ayrıca API KEY gerektiren sınırlı API lar için aracı gibi iş görmesi iç
 
 [Back-End Readme](./kampsitesi-back-end/readme.md)
 
+## Yapılacaklar
+
+Proje bitmiş gibi görünse de;
+
+- [ ] Back-End için kapsamlı hata testi yapılmadı.
+- [ ] Back-End için genel bir hata yönetici middleware tanımlanmadı.
+- [ ] Front-End için kapsamlı hata testi yapılmadı.
+- [ ] Front-End için özellikle app.js için kodlar tekrar gözden geçirilip Kamp deytay sayfasındaki gibi tam OOP yapısına geçirilebilir.
+
 ## Kaynaklar
 
 Kamp alanı bilgileri [Google Haritalar - Kamp Yerleri - Niyazi Solak](https://www.google.com/maps/d/viewer?mid=1OXYU1CRdfYLRTIYIjsOnakf2xy8&ll=39.83272060521435%2C34.16905716795084&z=8) hazırlamış olduğu herkese açık Google Haritalar'dan alınmıştır.
@@ -42,5 +52,3 @@ Kamp alanı bilgileri [Google Haritalar - Kamp Yerleri - Niyazi Solak](https://w
 &copy; Bu proje kesinlikle ticari bir amaç içermez. Kullanılan *görsel* ve *içeriğin* ticari amaçlı kullanımı **telif hakı ihlali** oluşturabilir.
 
 Teşekkürler | Mustafa Yatağan
-
-<sub>Bu Redme <span style="color:limegreen">*28.05.2022*</span> tarihinde hazırlanmıştır, geliştirme sırasında değişecektir.</sub>

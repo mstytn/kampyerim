@@ -274,6 +274,16 @@ var _updatePage = /*#__PURE__*/new WeakSet();
 
 var _hook = /*#__PURE__*/new WeakSet();
 
+var _carouselClick = /*#__PURE__*/new WeakMap();
+
+var _updateFullCarouselElements = /*#__PURE__*/new WeakSet();
+
+var _createFullScreenCarousel = /*#__PURE__*/new WeakSet();
+
+var _toggleFullCarousel = /*#__PURE__*/new WeakMap();
+
+var _fullcarouselSelectorActivate = /*#__PURE__*/new WeakSet();
+
 var _weatherExpand = /*#__PURE__*/new WeakMap();
 
 var Page = /*#__PURE__*/function () {
@@ -282,9 +292,51 @@ var Page = /*#__PURE__*/function () {
 
     _classCallCheck(this, Page);
 
+    _classPrivateMethodInitSpec(this, _fullcarouselSelectorActivate);
+
+    _classPrivateMethodInitSpec(this, _createFullScreenCarousel);
+
+    _classPrivateMethodInitSpec(this, _updateFullCarouselElements);
+
     _classPrivateMethodInitSpec(this, _hook);
 
     _classPrivateMethodInitSpec(this, _updatePage);
+
+    _classPrivateFieldInitSpec(this, _carouselClick, {
+      writable: true,
+      value: function value(event) {
+        var imgIndex = event.target.getAttribute('data-index');
+        console.log(imgIndex);
+
+        _classPrivateFieldGet(_this2, _toggleFullCarousel).call(_this2, imgIndex, ["1", "2"]);
+      }
+    });
+
+    _classPrivateFieldInitSpec(this, _toggleFullCarousel, {
+      writable: true,
+      value: function value() {
+        var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+        // else {
+        //   this.fullcarousel.activeIndex = index
+        //   this.#fullcarouselSelectorActivate()
+        // }
+        _this2.fullcarousel.activeIndex = index;
+
+        _classPrivateMethodGet(_this2, _fullcarouselSelectorActivate, _fullcarouselSelectorActivate2).call(_this2);
+
+        if (_this2.fullcarousel.isVisible) {
+          _this2.fullcarousel.element.classList.remove('show');
+
+          document.querySelector('body').style.overflow = 'auto';
+          _this2.fullcarousel.isVisible = false;
+        } else {
+          _this2.fullcarousel.element.classList.add('show');
+
+          document.querySelector('body').style.overflow = 'hidden';
+          _this2.fullcarousel.isVisible = true;
+        }
+      }
+    });
 
     _classPrivateFieldInitSpec(this, _weatherExpand, {
       writable: true,
@@ -323,6 +375,16 @@ var Page = /*#__PURE__*/function () {
     this.weatherExpandButtonIcon = document.querySelector('.expander > i.bi');
     this.weahterInfo = document.querySelector('.weather');
     this.weatherInfoExpanded = false;
+    this.carousel = document.querySelector('.images__carousel'), this.fullcarousel = {
+      element: document.querySelector('.carousel'),
+      isVisible: false,
+      closeButton: document.querySelector('.carousel > button'),
+      imageSelectorElement: document.querySelector('.carousel .img-selector'),
+      carouselImages: document.querySelectorAll('.carousel > .img-selector > .img'),
+      activeIndex: -1,
+      mainImageElement: document.querySelector('.carousel .disimage > img'),
+      carouselImageLinks: []
+    };
     this.weatherToday = {
       day: document.querySelector('#gun1 > h3'),
       icon: document.querySelector('#gun1 img'),
@@ -344,6 +406,8 @@ var Page = /*#__PURE__*/function () {
         max: max
       });
     }
+
+    this.distance = document.querySelector('.road span');
 
     _classPrivateMethodGet(this, _hook, _hook2).call(this);
   }
@@ -382,9 +446,26 @@ var Page = /*#__PURE__*/function () {
       return showAppPage;
     }()
   }, {
+    key: "updateDistance",
+    value: function updateDistance(distanceData) {
+      if (distanceData) this.distance.innerText = distanceData + ' km';
+    }
+  }, {
+    key: "createCraousel",
+    value: function createCraousel(imageLinks) {
+      var _this3 = this;
+
+      this.fullcarousel.carouselImageLinks = imageLinks;
+      this.fullcarousel.carouselImageLinks.forEach(function (il, i) {
+        _this3.carousel.insertAdjacentHTML('beforeend', "\n        <div class=\"img\" data-index=\"".concat(i, "\">\n          <img src=\"").concat(il, "\" alt=\"").concat(il, "\">\n        </div>\n      "));
+      });
+
+      _classPrivateMethodGet(this, _createFullScreenCarousel, _createFullScreenCarousel2).call(this);
+    }
+  }, {
     key: "updateWeather",
     value: function updateWeather(wData) {
-      var _this3 = this;
+      var _this4 = this;
 
       var _wData$data$weather$m = wData.data.weather.main,
           temp = _wData$data$weather$m.temp,
@@ -395,8 +476,12 @@ var Page = /*#__PURE__*/function () {
       this.weatherToday.min.innerText = Math.round(temp_min);
       this.weatherToday.max.innerText = Math.round(temp_max);
       this.weatherToday.now.innerText = Math.round(temp);
-      console.log(wData.data.dailyWeather);
-      if (!wData.data.dailyWeather) this.weatherExpandButton.style.display = 'none';
+
+      if (!wData.data.dailyWeather) {
+        this.weatherExpandButton.style.display = 'none';
+        return;
+      }
+
       wData.data.dailyWeather.forEach(function (data, index) {
         var weekdadays = ["Pzr", "Pzt", "Sal", "Çrş", "Prş", "Cum", "Cts"];
         var dt = new Date(data.dt_txt);
@@ -404,10 +489,10 @@ var Page = /*#__PURE__*/function () {
         var min_temp = data.min_temp,
             max_temp = data.max_temp;
         var icon = data.weather[0].icon;
-        _this3.weatherNext[index].icon.src = "imgs/".concat(icon, ".png");
-        _this3.weatherNext[index].min.innerText = Math.round(min_temp);
-        _this3.weatherNext[index].max.innerText = Math.round(max_temp);
-        _this3.weatherNext[index].day.innerText = theDate;
+        _this4.weatherNext[index].icon.src = "imgs/".concat(icon, ".png");
+        _this4.weatherNext[index].min.innerText = Math.round(min_temp);
+        _this4.weatherNext[index].max.innerText = Math.round(max_temp);
+        _this4.weatherNext[index].day.innerText = theDate;
       });
     }
   }]);
@@ -420,12 +505,13 @@ function _updatePage2(_x5) {
 }
 
 function _updatePage3() {
-  _updatePage3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(data) {
+  _updatePage3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(data) {
     var bgstyle;
-    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
       while (1) {
-        switch (_context9.prev = _context9.next) {
+        switch (_context10.prev = _context10.next) {
           case 0:
+            document.title = 'Kampi | ' + data.name;
             bgstyle = document.querySelector('body').style;
             bgstyle.backgroundImage = "url(".concat(data.images[0], ")");
             bgstyle.backgroundRepeat = 'no-repeat';
@@ -438,35 +524,81 @@ function _updatePage3() {
             this.campInfoHeader.innerText = data.name;
             this.campInfoParagraph.innerText = data.description;
 
-          case 11:
+          case 12:
           case "end":
-            return _context9.stop();
+            return _context10.stop();
         }
       }
-    }, _callee9, this);
+    }, _callee10, this);
   }));
   return _updatePage3.apply(this, arguments);
 }
 
 function _hook2() {
+  var _this6 = this;
+
   this.weatherExpandButton.addEventListener('click', _classPrivateFieldGet(this, _weatherExpand));
+  this.carousel.addEventListener('click', _classPrivateFieldGet(this, _carouselClick));
+  this.fullcarousel.closeButton.addEventListener('click', function () {
+    _classPrivateFieldGet(_this6, _toggleFullCarousel).call(_this6);
+  });
+}
+
+function _updateFullCarouselElements2() {
+  var _this7 = this;
+
+  this.fullcarousel.element = document.querySelector('.carousel');
+  this.fullcarousel.imageSelectorElement = document.querySelector('.carousel .img-selector');
+  this.fullcarousel.carouselImages = document.querySelectorAll('.carousel > .img-selector > .img');
+  this.fullcarousel.carouselImages.forEach(function (sel, i) {
+    sel.addEventListener('click', function (event) {
+      _this7.fullcarousel.activeIndex = Number(event.target.parentElement.getAttribute('data-index'));
+
+      _classPrivateMethodGet(_this7, _fullcarouselSelectorActivate, _fullcarouselSelectorActivate2).call(_this7);
+    });
+  });
+}
+
+function _createFullScreenCarousel2() {
+  var _this8 = this;
+
+  this.fullcarousel.carouselImageLinks.forEach(function (il, i) {
+    _this8.fullcarousel.imageSelectorElement.insertAdjacentHTML('beforeend', "\n      <div class=\"img\" data-index=\"".concat(i, "\">\n      <img src=\"").concat(il, "\" alt=\"").concat(il, "\">\n    </div>\n      "));
+  });
+
+  _classPrivateMethodGet(this, _updateFullCarouselElements, _updateFullCarouselElements2).call(this);
+}
+
+function _fullcarouselSelectorActivate2() {
+  if (this.fullcarousel.carouselImageLinks.length < 2) {
+    this.fullcarousel.imageSelectorElement.style.display = 'none';
+    this.fullcarousel.mainImageElement.src = this.fullcarousel.carouselImages[this.fullcarousel.activeIndex].firstElementChild.src;
+    return;
+  } else {
+    this.fullcarousel.imageSelectorElement.style.display = 'flex';
+    this.fullcarousel.carouselImages.forEach(function (i) {
+      i.classList.remove('active');
+    });
+    this.fullcarousel.carouselImages[this.fullcarousel.activeIndex].classList.add('active');
+    this.fullcarousel.mainImageElement.src = this.fullcarousel.carouselImages[this.fullcarousel.activeIndex].firstElementChild.src;
+  }
 }
 
 var MyMapbox = /*#__PURE__*/function () {
   function MyMapbox() {
-    var _this4 = this;
+    var _this5 = this;
 
     _classCallCheck(this, MyMapbox);
 
     _defineProperty(this, "createMap", function (location) {
-      _this4.map = new mapboxgl.Map({
+      _this5.map = new mapboxgl.Map({
         container: 'map',
-        style: 'mapbox://styles/mapbox/light-v10',
+        style: 'mapbox://styles/mapbox/dark-v10',
         center: location,
         zoom: 10
       });
 
-      _this4.map.on('load', function () {
+      _this5.map.on('load', function () {
         var marker = new mapboxgl.Marker();
         marker.setLngLat(location);
         marker.addTo(this);
@@ -571,171 +703,139 @@ var Weather = /*#__PURE__*/function () {
   return Weather;
 }();
 
+var Distancer = /*#__PURE__*/function () {
+  function Distancer() {
+    _classCallCheck(this, Distancer);
+
+    this.locdata = undefined;
+    this.camplocation = undefined;
+    this.distance = undefined;
+  }
+
+  _createClass(Distancer, [{
+    key: "updateLocationData",
+    value: function updateLocationData(loc, cloc) {
+      this.locdata = loc;
+      this.camplocation = cloc;
+    }
+  }, {
+    key: "getDistance",
+    value: function () {
+      var _getDistance = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
+        var requestBody, data;
+        return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+          while (1) {
+            switch (_context8.prev = _context8.next) {
+              case 0:
+                if (!(!this.locdata || !this.camplocation)) {
+                  _context8.next = 2;
+                  break;
+                }
+
+                return _context8.abrupt("return", {
+                  data: false
+                });
+
+              case 2:
+                requestBody = {
+                  location: this.locdata,
+                  camplocation: this.camplocation
+                };
+                _context8.next = 5;
+                return kampi.fetchPost('/campdistance', requestBody);
+
+              case 5:
+                data = _context8.sent;
+                return _context8.abrupt("return", data);
+
+              case 7:
+              case "end":
+                return _context8.stop();
+            }
+          }
+        }, _callee8, this);
+      }));
+
+      function getDistance() {
+        return _getDistance.apply(this, arguments);
+      }
+
+      return getDistance;
+    }()
+  }]);
+
+  return Distancer;
+}();
+
 var page = new Page();
-var kampi = new Kampi();
+var kampi = new Kampi('https://kampisitesi.herokuapp.com');
 var uLoc = new UserLocation();
 var myMapBox = new MyMapbox();
 var weather = new Weather();
+var dist = new Distancer();
 
 function main() {
   return _main.apply(this, arguments);
 }
 
 function _main() {
-  _main = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8() {
-    var campInfo, wData;
-    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+  _main = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9() {
+    var campInfo, wData, distance;
+    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
       while (1) {
-        switch (_context8.prev = _context8.next) {
+        switch (_context9.prev = _context9.next) {
           case 0:
-            _context8.prev = 0;
-            _context8.next = 3;
+            _context9.prev = 0;
+            _context9.next = 3;
             return uLoc.requestLocation();
 
           case 3:
-            _context8.next = 7;
+            _context9.next = 7;
             break;
 
           case 5:
-            _context8.prev = 5;
-            _context8.t0 = _context8["catch"](0);
+            _context9.prev = 5;
+            _context9.t0 = _context9["catch"](0);
 
           case 7:
-            _context8.next = 9;
+            _context9.next = 9;
             return kampi.getCampInfo();
 
           case 9:
-            campInfo = _context8.sent;
-            _context8.next = 12;
+            campInfo = _context9.sent;
+            _context9.next = 12;
             return page.showAppPage(campInfo);
 
           case 12:
-            page.removePreloader(); // mapboxgl.accessToken = (await myMapBox.getToken()).data
-            // myMapBox.createMap(campInfo.location.coordinates)
-
-            weather.updateCampInfo(campInfo.location.coordinates, campInfo.postalcode); // const wData = await weather.getTheWeather()
-            // console.log(wData)
-
-            wData = {
-              "coordinates": [28.9888859, 41.1836765],
-              "zipcode": "34473",
-              "expiration": 1653778478924,
-              "data": {
-                "weather": {
-                  "coord": {
-                    "lon": 28.9889,
-                    "lat": 41.1837
-                  },
-                  "weather": [{
-                    "id": 804,
-                    "main": "Clouds",
-                    "description": "kapalı",
-                    "icon": "04n"
-                  }],
-                  "base": "stations",
-                  "main": {
-                    "temp": 22.5,
-                    "feels_like": 22.58,
-                    "temp_min": 18.53,
-                    "temp_max": 25.29,
-                    "pressure": 1011,
-                    "humidity": 68,
-                    "sea_level": 1011,
-                    "grnd_level": 994
-                  },
-                  "visibility": 10000,
-                  "wind": {
-                    "speed": 0.53,
-                    "deg": 97,
-                    "gust": 0.88
-                  },
-                  "clouds": {
-                    "all": 91
-                  },
-                  "dt": 1653767658,
-                  "sys": {
-                    "type": 1,
-                    "id": 6970,
-                    "country": "TR",
-                    "sunrise": 1653705361,
-                    "sunset": 1653758815
-                  },
-                  "timezone": 10800,
-                  "id": 6940491,
-                  "name": "Arıköy",
-                  "cod": 200
-                },
-                "dailyWeather": [{
-                  "dt_txt": "2022-05-29 12:00:00",
-                  "min_temp": 19,
-                  "max_temp": 23,
-                  "max_humidity": 83,
-                  "wind": {
-                    "speed": 4.16,
-                    "deg": 36,
-                    "gust": 4.81
-                  },
-                  "clouds": {
-                    "all": 5
-                  },
-                  "weather": [{
-                    "id": 800,
-                    "main": "Clear",
-                    "description": "açık",
-                    "icon": "01d"
-                  }],
-                  "wheather_icon": "http://openweathermap.org/img/wn/undefined@2x.png"
-                }, {
-                  "dt_txt": "2022-05-30 12:00:00",
-                  "min_temp": 19,
-                  "max_temp": 26,
-                  "max_humidity": 75,
-                  "wind": {
-                    "speed": 5.3,
-                    "deg": 263,
-                    "gust": 8.36
-                  },
-                  "clouds": {
-                    "all": 0
-                  },
-                  "weather": [{
-                    "id": 800,
-                    "main": "Clear",
-                    "description": "açık",
-                    "icon": "01d"
-                  }],
-                  "wheather_icon": "http://openweathermap.org/img/wn/undefined@2x.png"
-                }, {
-                  "dt_txt": "2022-05-31 12:00:00",
-                  "min_temp": 18,
-                  "max_temp": 23,
-                  "max_humidity": 85,
-                  "wind": {
-                    "speed": 3.84,
-                    "deg": 13,
-                    "gust": 4.03
-                  },
-                  "clouds": {
-                    "all": 40
-                  },
-                  "weather": [{
-                    "id": 802,
-                    "main": "Clouds",
-                    "description": "parçalı az bulutlu",
-                    "icon": "03d"
-                  }],
-                  "wheather_icon": "http://openweathermap.org/img/wn/undefined@2x.png"
-                }]
-              }
-            };
-            page.updateWeather(wData);
+            dist.updateLocationData(uLoc.point, campInfo.location.coordinates);
+            page.removePreloader();
+            _context9.next = 16;
+            return myMapBox.getToken();
 
           case 16:
+            mapboxgl.accessToken = _context9.sent.data;
+            myMapBox.createMap(campInfo.location.coordinates);
+            weather.updateCampInfo(campInfo.location.coordinates, campInfo.postalcode);
+            _context9.next = 21;
+            return weather.getTheWeather();
+
+          case 21:
+            wData = _context9.sent;
+            _context9.next = 24;
+            return dist.getDistance();
+
+          case 24:
+            distance = _context9.sent;
+            page.updateWeather(wData);
+            page.updateDistance(distance.data);
+            page.createCraousel(campInfo.images);
+
+          case 28:
           case "end":
-            return _context8.stop();
+            return _context9.stop();
         }
       }
-    }, _callee8, null, [[0, 5]]);
+    }, _callee9, null, [[0, 5]]);
   }));
   return _main.apply(this, arguments);
 }

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/camp.css">
+  <link rel="stylesheet" href="css/camp.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
   <link rel="shortcut icon" href="imgs/favicon.png" type="image/x-png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +12,13 @@
   <title>Kampi</title>
 </head>
 <body>
-
+    <div class="carousel">
+      <button>&#9747;</button>
+      <div class="disimage">
+        <img src="imgs/acar.jpg" alt="acar">
+      </div>
+      <div class="img-selector"></div>
+    </div>
     <div class="apppage">
     <div class="camp">
       <div class="camp__header">
@@ -20,7 +26,10 @@
           <img src="imgs/logotype.svg" alt="logo">
         </div>
         <div class="page__header">
-          <h1 class="page__header__title"></h1>
+          <div class="navigator">
+            <a href="index.html" title="Ana Sayfaa Geri Dön"><i class="bi bi-caret-left-fill"></i></a>
+            <h1 class="page__header__title"></h1>
+          </div>
           <p class="page__header__subtitle"></p>
           <p class="page__header__location"><i class="bi bi-geo-alt-fill"></i> <span></span></p>
         </div>
@@ -40,6 +49,7 @@
 
         <div class="road">
           <i class="bi bi-signpost"></i>
+          <span class="location"><img src="imgs/geo-dis.svg" alt="loc disabled"></span>
         </div>
 
         <div class="weather">
@@ -86,12 +96,50 @@
         </div>
       </div>
     </div>
+    <div class="images__carousel"></div>
+    <footer id="iletisim">
+      <!-- <div class="container"> -->
+        <div class="footer-row">
+          <div class="footer-col">
+            <h4>Amaç: </h4>
+            <p>İsmek Front-End Developer kursu için bitirme projesidir.</p>
+          </div>
+          <div class="footer-col">
+            <h4>İçerik hakkında bilgi: </h4>
+            <p>Kamp alanı lokasyonları <a href="https://www.google.com/maps/d/viewer?mid=1OXYU1CRdfYLRTIYIjsOnakf2xy8&ll=39.83272060521435%2C34.16905716795084&z=8">Google Haritalar - Kamp Yerleri - Niyazi Solak</a> hazırlamış olduğu herkese açık Google Haritalar'dan alınmıştır. Bunun dışında kamp bilgileri muhtelif sitelerden edinilmiştir. Kullanılan fotoğragfların telif gerektirme olasışığı çok yüksektir.</p>
+            </div>
+            <div class="footer-col">
+              <h4>Yasal Metin: </h4>
+              <p>&copy; Bu proje kesinlikle ticari bir amaç içermez. Kullanılan *görsel* ve *içeriğin* ticari amaçlı kullanımı <strong>telif hakı ihlali</strong> oluşturabilir.</p>
+            </div>
+            <div class="footer-col links">
+              <h4>Bağlantılar: </h4>
+              <ul>
+                <li><a href="https://github.com/mstytn/kampyerim/tree/main/kampsitesi-back-end" traget="_blank"><i class="bi bi-github"></i> github : back-end</a></li>
+                <li><a href="https://github.com/mstytn/kampyerim/tree/main/kampsitesi-front-end" traget="_blank"><i class="bi bi-github"></i> github : front-end</a></li>
+                <li><a href="mailto:mustafayatagan@gmail.com"><i class="bi bi-envelope-fill"></i> mustafayatagan@gmail.com</a></li>
+                <li><a href="https://enstitu.ibb.istanbul/portal/egitim_detay.aspx?BransCode=3591" traget="_blank"><i class="bi bi-mortarboard-fill"></i> ismek: frontend</a></li>
+                <li><img src="imgs/logotype-disi.svg" alt="kampi logo" width="65%"></li>
+              </ul>
+            </div>
+          </div>
+          <div class="footer-row">
+            <div class="footer-col-copy">
+              <p>Bu projenin back-end ve fornt-en kaynak kodları herkese açık olup, proje hakkında daha detaylı bilgiyi <a href="https://github.com/mstytn/kampyerim" target="_blank"><i class="bi bi-github"></i> github </a>üzerinden incelenebilirsiniz.</p>
+            </div>
+          </div>
+          <div class="footer-row">
+            <div class="footer-col-copy">
+              <p>Teşekkürler | Mustafa Yatağan</p>
+            </div>
+          </div>
+        <a href="#" class="totop" title="Başa Dön"><i class="bi bi-caret-up"></i></a>
+    </footer>
   </div>
-
   <aside class="preloader">
     <img src="imgs/loader.gif" alt="preloader">
     <p class="preload-message">Yükleniyor</p>
   </aside>
-  <script src="camp.js"></script>
+  <script src="camp.min.js"></script>
 </body>
 </html>

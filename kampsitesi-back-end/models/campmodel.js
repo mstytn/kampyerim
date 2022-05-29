@@ -1,4 +1,3 @@
-// jshint ignore: start
 const { model, Schema } = require('mongoose')
 
 /**

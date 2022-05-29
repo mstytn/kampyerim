@@ -1,6 +1,6 @@
 # Kampi Web Uygulaması Back-End
 
-[Kampyerim Okubeni](../readme.md) > Back-End Okubemi | [Front-End Okubeni](../kampsitesi-front-end/readme.md)
+[Kampi Okubeni](../readme.md) > Back-End Okubemi | [Front-End Okubeni](../kampsitesi-front-end/readme.md)
 
 <img src="../kampsitesi-front-end/build/imgs/logotype.svg" height="75">
 
