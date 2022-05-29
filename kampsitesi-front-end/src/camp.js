@@ -179,15 +179,14 @@ class Page {
 
   #carouselClick = (event) => {
     const imgIndex = event.target.getAttribute('data-index')
-    console.log(imgIndex)
-    this.#toggleFullCarousel(imgIndex, ["1", "2"])
+    this.#toggleFullCarousel(imgIndex)
   }
 
   #updateFullCarouselElements() {
     this.fullcarousel.element = document.querySelector('.carousel')
     this.fullcarousel.imageSelectorElement = document.querySelector('.carousel .img-selector')
     this.fullcarousel.carouselImages = document.querySelectorAll('.carousel > .img-selector > .img')
-    this.fullcarousel.carouselImages.forEach((sel, i) => {
+    this.fullcarousel.carouselImages.forEach(sel => {
       sel.addEventListener('click', (event) => {
         this.fullcarousel.activeIndex = Number(event.target.parentElement.getAttribute('data-index'))
         this.#fullcarouselSelectorActivate()
@@ -219,11 +218,6 @@ class Page {
   }
 
   #toggleFullCarousel = (index = 0) => {
-
-    // else {
-    //   this.fullcarousel.activeIndex = index
-    //   this.#fullcarouselSelectorActivate()
-    // }
     this.fullcarousel.activeIndex = index
     this.#fullcarouselSelectorActivate()
     if (this.fullcarousel.isVisible) {

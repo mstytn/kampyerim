@@ -306,9 +306,8 @@ var Page = /*#__PURE__*/function () {
       writable: true,
       value: function value(event) {
         var imgIndex = event.target.getAttribute('data-index');
-        console.log(imgIndex);
 
-        _classPrivateFieldGet(_this2, _toggleFullCarousel).call(_this2, imgIndex, ["1", "2"]);
+        _classPrivateFieldGet(_this2, _toggleFullCarousel).call(_this2, imgIndex);
       }
     });
 
@@ -316,10 +315,6 @@ var Page = /*#__PURE__*/function () {
       writable: true,
       value: function value() {
         var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-        // else {
-        //   this.fullcarousel.activeIndex = index
-        //   this.#fullcarouselSelectorActivate()
-        // }
         _this2.fullcarousel.activeIndex = index;
 
         _classPrivateMethodGet(_this2, _fullcarouselSelectorActivate, _fullcarouselSelectorActivate2).call(_this2);
@@ -550,7 +545,7 @@ function _updateFullCarouselElements2() {
   this.fullcarousel.element = document.querySelector('.carousel');
   this.fullcarousel.imageSelectorElement = document.querySelector('.carousel .img-selector');
   this.fullcarousel.carouselImages = document.querySelectorAll('.carousel > .img-selector > .img');
-  this.fullcarousel.carouselImages.forEach(function (sel, i) {
+  this.fullcarousel.carouselImages.forEach(function (sel) {
     sel.addEventListener('click', function (event) {
       _this7.fullcarousel.activeIndex = Number(event.target.parentElement.getAttribute('data-index'));
 
