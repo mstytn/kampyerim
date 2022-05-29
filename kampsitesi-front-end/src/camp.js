@@ -395,9 +395,11 @@ async function main() {
   myMapBox.createMap(campInfo.location.coordinates)
   weather.updateCampInfo(campInfo.location.coordinates, campInfo.postalcode)
   const wData = await weather.getTheWeather()
-  const distance = await dist.getDistance()
+  if (uLoc.isPointGathered) {
+    const distance = await dist.getDistance()
+    page.updateDistance(distance.data)
+  }
   page.updateWeather(wData)
-  page.updateDistance(distance.data)
   page.createCraousel(campInfo.images)
 }
 

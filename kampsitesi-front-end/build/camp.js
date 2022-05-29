@@ -821,16 +821,24 @@ function _main() {
 
           case 21:
             wData = _context9.sent;
-            _context9.next = 24;
+
+            if (!uLoc.isPointGathered) {
+              _context9.next = 27;
+              break;
+            }
+
+            _context9.next = 25;
             return dist.getDistance();
 
-          case 24:
+          case 25:
             distance = _context9.sent;
-            page.updateWeather(wData);
             page.updateDistance(distance.data);
+
+          case 27:
+            page.updateWeather(wData);
             page.createCraousel(campInfo.images);
 
-          case 28:
+          case 29:
           case "end":
             return _context9.stop();
         }
