@@ -1312,4 +1312,8 @@ footer .footer-col ul li {
   .featured-campgrid {
     display: none;
   }
+
+  .mainmenu {
+    display: none;
+  }
 }
